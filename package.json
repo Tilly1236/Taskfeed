@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "cdev": "concurrently --kill-others \"vite\" \"node --watch --watch-preserve-output server/api.js\"",
-    "dev": "vite",
+    "full": "concurrently --kill-others \"vite\" \"node --watch --watch-preserve-output server/api.js\"",
+    "client": "vite",
     "build": "vite build",
     "server": "node --watch server/api.js",
     "lint": "eslint .",
