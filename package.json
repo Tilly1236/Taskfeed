@@ -11,6 +11,10 @@
     "lint": "eslint .",
     "preview": "vite preview"
   },
+  "engines" : { 
+    "npm" : ">=10.9.2",
+    "node" : ">=22.14.0"
+  },
   "dependencies": {
     "express": "^4.21.2",
     "react": "^19.0.0",
