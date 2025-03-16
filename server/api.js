@@ -7,10 +7,6 @@ app.get('/', function (req, res) {
     res.json({ Test: 'test' });
 });
 
-app.get('/api', function (req, res) {
-  res.json({ Test: 'test' });
-});
-
 app.listen(port, () => {
   console.log(`Taskfeed Server: listening on port ${port}`)
 })
