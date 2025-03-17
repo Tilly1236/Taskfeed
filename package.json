@@ -7,7 +7,7 @@
     "full": "concurrently --kill-others \"vite\" \"node --watch --watch-preserve-output server/api.js\"",
     "client": "vite",
     "build": "vite build",
-    "server": "node --watch server/api.js",
+    "server": "node --watch server/server.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
