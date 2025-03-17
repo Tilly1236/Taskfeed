@@ -1,12 +1,11 @@
-import express from 'express';
+import {Router} from 'express';
 
-const app = express()
-const port = 3000
+const api = Router();
 
-app.get('/', function (req, res) {
-    res.json({ Test: 'test' });
-});
-
-app.listen(port, () => {
-  console.log(`Taskfeed Server: listening on port ${port}`)
+api.get('/', (req, res) => {
+  res.send("Hello World")
 })
+
+export default api;
+
+
