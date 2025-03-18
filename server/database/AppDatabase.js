@@ -13,9 +13,14 @@ class AppDatabase
             this.db.pragma('journal_mode = WAL');
 
             // users
-            this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, username TEXT UNIQUE, displayname TEXT) ").run();
+            this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, username TEXT UNIQUE) ").run();
         }
         
+    }
+
+    static add_user(userid, username)
+    {
+        this.db.prepare("INSERT INTO users VALUES (?, ?)").run(userid, username);
     }
 
 }
