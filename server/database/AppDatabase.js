@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3'
+import Database from 'better-sqlite3';
 
 class AppDatabase 
 {
@@ -9,10 +9,11 @@ class AppDatabase
     {   
         if (!this.db)
         {
-            this.db = new sqlite3.Database('./server/database/AppDatabase.sqlite3');
+            this.db = new Database('./server/database/AppDatabase.sqlite3');
+            this.db.pragma('journal_mode = WAL');
 
             // users
-            this.db.run("CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, username TEXT UNIQUE, displayname TEXT) ");
+            this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, username TEXT UNIQUE, displayname TEXT) ").run();
         }
         
     }

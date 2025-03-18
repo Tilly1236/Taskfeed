@@ -1,4 +1,4 @@
-import sqlite3 from 'sqlite3'
+import Database from 'better-sqlite3';
 
 class AuthDatabase 
 {
@@ -9,8 +9,10 @@ class AuthDatabase
     {   
         if (!this.db)
         {
-            this.db = new sqlite3.Database('./server/database/AuthDatabase.sqlite3');
-            this.db.run("CREATE TABLE IF NOT EXISTS auth (userid TEXT PRIMARY KEY, hash TEXT) ");
+            this.db = new Database('./server/database/AuthDatabase.sqlite3');
+            this.db.pragma('journal_mode = WAL');
+
+            this.db.exec("CREATE TABLE IF NOT EXISTS auth (userid TEXT PRIMARY KEY, hash TEXT) ");
         }
         
     }
