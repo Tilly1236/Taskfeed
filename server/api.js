@@ -1,10 +1,9 @@
 import {Router} from 'express';
+import signup from './authentication/signup.js';
 
 const api = Router();
 
-api.get('/', (req, res) => {
-  res.send("Hello World")
-})
+api.use('/signup', signup)
 
 export default api;
 
