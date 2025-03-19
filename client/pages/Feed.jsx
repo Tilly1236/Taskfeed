@@ -26,10 +26,20 @@ function Feed() {
     
         // Function to handle the submission of a comment.
         // It updates the `comments` state by adding the new comment to the corresponding post's comment array.
-        const handleCommentSubmit = (postId, comment) => {
+        const handleCommentSubmit = (postId, commentText) => {
+            if (!commentText.trim()) {
+                return; // Do not add empty comments
+            }
+
+            const newComment = {
+                text: commentText, // The comment text
+                timestamp: new Date().toLocaleString(), // The current timestamp
+                user: "User123" // The user who posted the comment (Replace to be dynamic based on the logged-in user)
+            }
+
             setComments((prevComments) => ({
                 ...prevComments, // Keep existing comments for other posts
-                [postId]: [...(prevComments[postId] || []), comment] // Add the new comment to the post's array
+                [postId]: [...(prevComments[postId] || []), newComment] // Add the new comment to the post's array
             }));
             setShowCommentInput(null); // Hide the input field after the comment is submitted
         };
@@ -71,8 +81,7 @@ function Feed() {
                             <h5 className="card-title">Posters Name</h5>
                             <h6 className="card-subtitle mb-2 text-body-secondary">Date Posted</h6>
                             <p className="card-text">Text provided by poster</p>
-                            {/*If user added image insert it here*/}
-                            <a href="#" className="card-link">Attach File</a>
+                            {/*How to pull attachments and display with text*/}
                             {/*Button to add comment to post*/}                    
                             <a  href="#" 
                                 className="card-link" 
@@ -100,7 +109,12 @@ function Feed() {
                             {/* Display list of comments for the post */}
                             <ul className="mt-2">
                                 {(comments[1] || []).map((comment, index) => ( // Replace `1` with the unique post ID
-                                    <li key={index}>{comment}</li>
+                                    <li key={index}>
+                                        <strong>{comment.user}</strong>: {comment.text}
+                                        <br />
+                                        <small className="text-muted">{comment.timestamp}</small>
+                                    </li>
+
                                 ))}
                             </ul>
                         </div>
