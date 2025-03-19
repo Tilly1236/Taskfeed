@@ -22,6 +22,11 @@ class AuthDatabase
         this.db.prepare("INSERT INTO auth VALUES (?, ?)").run(userid, hash);
     }
 
+    static get last_userid()
+    {
+        return this.db.prepare("SELECT MAX(userid) FROM auth LIMIT 1;").get()['MAX(userid)']
+    }
+
 }
 
 export default AuthDatabase;
