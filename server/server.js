@@ -6,8 +6,8 @@ const port = 3000
 
 app.use('/api', api);
 
-app.use((err, req, res) => {
-  res.status(err.status ?? 500).send({ error: err.message })
+app.get('/', (req, res) => {
+  res.send("Hello World")
 })
 
 app.listen(port, () => {
