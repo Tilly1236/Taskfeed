@@ -22,7 +22,7 @@ class SignupInterface
 
     static new_user(username, password)
     {      
-        if (AppDatabase.username_exits(username) == 1 )
+        if (AppDatabase.username_exists(username) == 1 )
         {
             return -1;
         }
@@ -31,7 +31,7 @@ class SignupInterface
 
         this.increment += 2231
         let hash = crypto.createHash('sha256', "").update(password+this.salt).digest('hex');
-        
+
 
         AuthDatabase.add_auth(userid, hash)
         AppDatabase.add_user(userid, username)
