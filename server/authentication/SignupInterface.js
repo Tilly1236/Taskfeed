@@ -16,7 +16,7 @@ class SignupInterface
         let last = AuthDatabase.last_userid;
         if (last)
         {
-            this.increment = last + 2231;
+            this.increment = parseInt(last) + 2231;
         }
     }
 
@@ -30,8 +30,8 @@ class SignupInterface
         let userid = String(this.increment);
 
         this.increment += 2231
-        let hash = crypto.createHash('sha256', password+this.salt).digest('hex');;
-
+        let hash = crypto.createHash('sha256', "").update(password+this.salt).digest('hex');
+        
 
         AuthDatabase.add_auth(userid, hash)
         AppDatabase.add_user(userid, username)
