@@ -28,6 +28,11 @@ class AppDatabase
         return this.db.prepare("SELECT exists(SELECT 1 FROM users WHERE username = ?) AS row_exists;").get(username)['row_exists'];
     }
 
+    static get_userid(username)
+    {
+        return this.db.prepare("SELECT userid FROM users WHERE username = ?").get(username)['userid'];
+    }
+
 }
 
 export default AppDatabase;
