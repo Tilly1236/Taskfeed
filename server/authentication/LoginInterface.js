@@ -1,7 +1,8 @@
 import AuthDatabase from "../database/AuthDatabase.js";
 import AppDatabase from "../database/AppDatabase.js";
-
 import AuthShared from './AuthShared.js';
+
+import LoginError from "../errors/LoginError.js";
 
 class LoginInterface
 {
@@ -11,7 +12,7 @@ class LoginInterface
 
 		if (AppDatabase.username_exists(username) != 1 )
 		{
-			return -1;
+			throw new LoginError("Username exits");
 		}
 
 		let userid = AppDatabase.get_userid(username);
@@ -22,11 +23,11 @@ class LoginInterface
 
 		if (auth_hash === hash)
 		{
-			return 1;
+			return userid;
 		}
 		else
 		{
-			return -1;
+			throw new LoginError("Hashes do not match");
 		}
 	}
 }

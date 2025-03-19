@@ -2,7 +2,9 @@ import AuthDatabase from "../database/AuthDatabase.js";
 import AppDatabase from "../database/AppDatabase.js";
 import AuthShared from './AuthShared.js';
 
-import process from 'process'
+import SignupError from "../errors/SignupError.js";
+
+import process from 'process';
 
 class SignupInterface
 {   
@@ -26,18 +28,18 @@ class SignupInterface
     {      
         if (AppDatabase.username_exists(username) == 1 )
         {
-            return -1;
+           throw new SignupError("Username is in use.");
         }
 
         let userid = String(this.increment);
 
         this.increment += this.inc;
-        let hash = AuthShared.hash(password)
+        let hash = AuthShared.hash(password);
 
 
-        AuthDatabase.add_auth(userid, hash)
-        AppDatabase.add_user(userid, username)
-        return 1;
+        AuthDatabase.add_auth(userid, hash);
+        AppDatabase.add_user(userid, username);
+        return userid;
     }
 }
 

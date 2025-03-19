@@ -1,6 +1,7 @@
 import express from 'express';
-
 import LoginInterface from './LoginInterface.js';
+
+import LoginError from '../errors/LoginError.js';
 
 const login = express.Router();
 
@@ -16,25 +17,25 @@ login.post('/', (req, res) => {
 	}
 	catch (error)
 	{
-		console.log(error)
-		res.status(500).send("Internal Server Error")
-	}
-
-	switch (query)
-	{
-		case 1:
+		
+		if (error instanceof LoginError)
+		{
 			res.set({'Content-Type': 'application/json' });
-			res.status(200)
-			res.send({ status : 'OK', message: '' })
-			break;
-		case -1:
-			res.set({'Content-Type': 'application/json' })
-			res.status(401)
-			res.send({ status : 'ERROR', message: 'Login Infomation is wrong.' })
-			break;
+			res.status(401);
+			return res.send({ status : 'ERROR', message: 'Login Infomation is wrong.' });
+		}
+		else
+		{
+			console.log(error);
+			return res.status(500).send("Internal Server Error");
+		}
+
+		
 	}
 
-	res.end();
+	res.set({'Content-Type': 'application/json' });
+	res.status(200);
+	return res.send({ status : 'OK', message: '' });
 })
 
 
