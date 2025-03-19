@@ -1,13 +1,10 @@
 import AuthDatabase from "../database/AuthDatabase.js";
 import AppDatabase from "../database/AppDatabase.js";
 
-import crypto from 'crypto';
-
+import AuthShared from './AuthShared.js';
 
 class LoginInterface
 {
-
-	static salt = "salt"
 
 	static login(username, password)
 	{
@@ -21,11 +18,7 @@ class LoginInterface
 
 		let auth_hash = AuthDatabase.get_hash(userid);
 
-		let hello = password+this.salt
-
-		let hash = crypto.createHash('sha256', "").update(password+this.salt).digest('hex');
-
-		console.log(`${auth_hash} ${hello}`)
+		let hash = AuthShared.hash(password)
 
 		if (auth_hash === hash)
 		{
