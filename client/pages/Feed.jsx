@@ -1,15 +1,48 @@
 import React, {useState} from "react";
 
+// Mock data for posts (replace this with data fetched from the database later)
+const mockPosts = [
+{
+    id: 1,
+    title: "John Doe",
+    date: "March 19, 2025",
+    content: "I accomplished nothing today.",
+    comments: [
+        {
+            user: "Jane Smith",
+            text: "You're doing great!",
+            timestamp: "March 20, 2025"
+        },
+    ],
+},
+{
+    id: 2,
+    title: "Jane Smith",
+    date: "March 20, 2025",
+    content: "I'm feeling motivated today!",
+    comments: [],
+},
+];
+
+
+
 const heading = {
     color: 'blue',
     fontSize: '50px'
 }
 
 const cards = {
-    width: '18rem'
+    width: '18rem',
+    textAlign: 'left'
 }
 
+
+
 function Feed() {
+
+        // State to store posts data
+        const [posts, setPosts] = useState(mockPosts); 
+        
         // State to store comments for each post. 
         // The key is the post ID, and the value is an array of comments for that post.
         const [comments, setComments] = useState({});
@@ -73,54 +106,58 @@ function Feed() {
 
             {/*Retrieving Posts*/}
             <ul className="list-group">
-                <li className="list-group-item">
-                    <input className="form-check-input me-1" type="checkbox" value="" id="firstCheckbox"/>
-                    <label className="form-check-label" htmlFor="firstCheckbox">
-                    <div className="card" style={cards}>
-                        <div className="card-body">
-                            <h5 className="card-title">Posters Name</h5>
-                            <h6 className="card-subtitle mb-2 text-body-secondary">Date Posted</h6>
-                            <p className="card-text">Text provided by poster</p>
-                            {/*How to pull attachments and display with text*/}
-                            {/*Button to add comment to post*/}                    
-                            <a  href="#" 
-                                className="card-link" 
-                                onClick={(e) => {
-                                    e.preventDefault(); 
-                                    handleCommentClick(1);}}>
-                                        Comment
-                            </a>
-                            {/* Input field for adding a comment (visible only for the selected post) */}
-                            {showCommentInput === 1 && ( // Replace `1` with the unique post ID
-                                <div>
-                                    <input
-                                        type="text"
-                                        className="form-control mt-2"
-                                        placeholder="Add a comment"
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
-                                                handleCommentSubmit(1, e.target.value); // Replace `1` with the unique post ID
-                                                e.target.value = ''; // Clear the input field
-                                            }
-                                        }}
-                                    />
-                                </div>
-                            )}
-                            {/* Display list of comments for the post */}
-                            <ul className="mt-2">
-                                {(comments[1] || []).map((comment, index) => ( // Replace `1` with the unique post ID
-                                    <li key={index}>
-                                        <strong>{comment.user}</strong>: {comment.text}
-                                        <br />
-                                        <small className="text-muted">{comment.timestamp}</small>
-                                    </li>
+                {posts.map((post) => (
+                    <li className="list-group-item" key={post.id}>
+                        <input className="form-check-input me-1" type="checkbox" value="" id="firstCheckbox"/>
+                        <label className="form-check-label" htmlFor="firstCheckbox">
+                        <div className="card" style={cards}>
+                            <div className="card-body">
+                                <h5 className="card-title">{post.title}</h5>
+                                <h6 className="card-subtitle mb-2 text-body-secondary"><small>{post.date}</small></h6>
+                                <br/>
+                                <p className="card-text">{post.content}</p>
+                                {/*How to pull attachments and display with text*/}
+                                {/*Button to add comment to post*/}                    
+                                <a  href="#" 
+                                    className="card-link" 
+                                    onClick={(e) => {
+                                        e.preventDefault(); 
+                                        handleCommentClick(post.id);
+                                    }}>
+                                            Comment
+                                </a>
+                                {/* Input field for adding a comment (visible only for the selected post) */}
+                                {showCommentInput === post.id && ( // Replace `1` with the unique post ID
+                                    <div>
+                                        <input
+                                            type="text"
+                                            className="form-control mt-2"
+                                            placeholder="Add a comment"
+                                            onKeyDown={(e) => {
+                                                if (e.key === 'Enter') {
+                                                    handleCommentSubmit(post.id, e.target.value); // Replace `1` with the unique post ID
+                                                    e.target.value = ''; // Clear the input field
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                )}
+                                {/* Display list of comments for the post */}
+                                <ul className="mt-2">
+                                    {post.comments.map((comment, index) => ( // Replace `1` with the unique post ID
+                                        <li key={index}>
+                                            <strong>{comment.user}</strong>: {comment.text}
+                                            <br />
+                                            <small className="text-muted">{comment.timestamp}</small>
+                                        </li>
 
-                                ))}
-                            </ul>
-                        </div>
-                    </div>          
-                    </label>
-                </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>          
+                        </label>
+                    </li>
+                ))}
             </ul>
                           
             
