@@ -3,6 +3,8 @@ import LoginInterface from './LoginInterface.js';
 
 import LoginError from '../errors/LoginError.js';
 
+import JsonWebToken from './JsonWebToken.js';
+
 const login = express.Router();
 
 login.use(express.json());
@@ -33,9 +35,11 @@ login.post('/', (req, res) => {
 		
 	}
 
+	let message = JsonWebToken.create({"id": query});
+
 	res.set({'Content-Type': 'application/json' });
 	res.status(200);
-	return res.send({ status : 'OK', message: '' });
+	return res.send({ status : 'OK', message: message });
 })
 
 
