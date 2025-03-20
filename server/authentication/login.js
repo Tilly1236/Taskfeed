@@ -37,7 +37,7 @@ login.post('/', (req, res) => {
 		
 	}
 
-	let message = JsonWebToken.create({"id": query});
+	let message = JsonWebToken.create(query);
 
 	res.set({'Content-Type': 'application/json' });
 	res.status(200);

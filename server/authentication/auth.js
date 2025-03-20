@@ -9,21 +9,26 @@ function auth() {
 		
 		if (!req)
 		{
-			return next();
+			return res.sendStatus(401)
 		}
 
 		let auth_header = req.get("Authorization");
+
+		if (!auth_header)
+		{
+			return res.sendStatus(401)
+		}
 			
 		const [auth_scheme, token] = auth_header.split(" ");
 
 		if (auth_scheme != "Bearer")
 		{
-		return next(new AuthError("Invalid header"))
+		return res.status(400).send("Invalid header");
 		}
 
 		try
 		{
-			verification = JsonWebToken.verify(token);
+			verification = JsonWebToken.verify_signature(token);
 		} catch (error)
 		{
 			if (error instanceof AuthError)
@@ -39,13 +44,17 @@ function auth() {
 
 		if (!verification)
 		{
-			return next(new AuthError("Invalid Token"))
+			return res.status(401).send("Invalid Token");
 		}
 		
-		let payload = JsonWebToken.data(token);
+		// let header = verification.header;
+		let payload = verification.payload;
+
+		// let current_time_seconds = Math.floor(Date.now() / 1000);
 
 
-		console.log()
+		res.locals.id = payload.id
+
 		return next();
 	  };
   }
