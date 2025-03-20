@@ -12,7 +12,7 @@ class LoginInterface
 
 		if (AppDatabase.username_exists(username) != 1 )
 		{
-			throw new LoginError("Username exits");
+			throw new LoginError("Username does not exit");
 		}
 
 		let userid = AppDatabase.get_userid(username);
