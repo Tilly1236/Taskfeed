@@ -37,6 +37,14 @@ class JsonWebToken
 	{
 		let header = JSON.stringify({ "alg": "HS256", "typ" : "JWT"});
 
+		let current_time_seconds = Math.floor(Date.now() / 1000);
+
+		let exp_time = current_time_seconds + 3600;
+
+		payload["iat"] = current_time_seconds;
+
+		payload["exp"] = exp_time;
+
 		payload = JSON.stringify(payload);
 
 		let base_encode = Buffer.from(header, "utf8").toString("base64") + "." + Buffer.from(payload, "utf8").toString("base64");
