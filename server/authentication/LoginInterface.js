@@ -23,7 +23,7 @@ class LoginInterface
 
 		if (auth_hash === hash)
 		{
-			return userid;
+			return {"id": userid, "username": username};
 		}
 		else
 		{
