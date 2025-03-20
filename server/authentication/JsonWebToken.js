@@ -30,7 +30,6 @@ class JsonWebToken
 
 		return split_token;
 
-
 	}
 
 	static create(payload)
@@ -54,21 +53,24 @@ class JsonWebToken
 		return token;
 	}
 
-	static verify(token)
+	static verify_signature(token)
 	{
 		let [header, payload, sig] = JsonWebToken.parse(token);
 
-		let verify_signature = JsonWebToken.signature(Buffer.from(header, "base64").toString("utf8"), Buffer.from(payload, "base64").toString("utf8"));
+		let header_decode = Buffer.from(header, "base64").toString("utf8");;
+		let payload_decode = Buffer.from(payload, "base64").toString("utf8");
 
-		return (sig === verify_signature);
+		let verify_signature = JsonWebToken.signature(header_decode, payload_decode);
+
+		if( verify_signature != sig)
+		{
+			return null;
+		}
+
+		return { "header": JSON.parse(header_decode), "payload" : JSON.parse(payload_decode)}
 	}
 
-	static data(token)
-	{
-		let [_header, payload, _sig] = JsonWebToken.parse(token)
 
-		return Buffer.from(payload, "base64").toString("utf8")
-	}
 }
 
 export default JsonWebToken;
