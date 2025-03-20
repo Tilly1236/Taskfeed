@@ -13,6 +13,8 @@ login.post('/', (req, res) => {
 
 	let query
 
+	if (!req.body) return res.sendStatus(400)
+
 	try
 	{
 		query = LoginInterface.login(req.body.username, req.body.password);

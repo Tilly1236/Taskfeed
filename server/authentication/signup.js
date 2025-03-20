@@ -8,6 +8,8 @@ signup.use(express.json());
 
 signup.post('/', (req, res) =>{
 
+	if (!req.body) return res.sendStatus(400)
+
 	try
 	{
 		SignupInterface.new_user(req.body.username, req.body.password);
