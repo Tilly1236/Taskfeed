@@ -1,47 +1,74 @@
 import React, {useState} from "react";
-
-// Mock data for posts (replace this with data fetched from the database later)
-const mockPosts = [
-{
-    id: 1,
-    title: "John Doe",
-    date: "March 19, 2025",
-    content: "I accomplished nothing today.",
-    comments: [
-        {
-            user: "Jane Smith",
-            text: "You're doing great!",
-            timestamp: "March 20, 2025"
-        },
-    ],
-},
-{
-    id: 2,
-    title: "Jane Smith",
-    date: "March 20, 2025",
-    content: "I'm feeling motivated today!",
-    comments: [],
-},
-];
-
-
-
-const heading = {
-    color: 'blue',
-    fontSize: '50px'
-}
+import { useEffect } from "react";
 
 const cards = {
-    width: '18rem',
-    textAlign: 'left'
-}
+    width: "100%", // Make the card take full width of its container
+    textAlign: "left",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Add a subtle shadow
+    borderRadius: "8px", // Add rounded corners
+};
 
 
 
 function Feed() {
 
+        
+        useEffect(() => {
+            //Simulate fetching groups from a database
+            const fetchGroups = async () => {
+                // Replace this with an actual API call when database is set up
+                const mockGroups = [
+                    {id: 1, name: "Work Group"},
+                    {id: 2, name: "Robotics"},
+                    {id: 3, name: "TaskFeed"},
+                ];
+                setGroups(mockGroups);
+            };
+
+            fetchGroups();
+        }, []);
+    
+        useEffect(() => {
+            //Simulate fetching posts from a database
+            const fetchPosts = async () => {
+                //Replace this with actual API call
+                const fetchedPosts = mockPosts;
+                setPosts(fetchedPosts);
+            };
+        
+            fetchPosts();
+        }, [])
+        
+        
+        // Mock data for posts (replace this with data fetched from the database later)
+        const mockPosts = [
+        {
+            id: 1,
+            title: "John Doe",
+            date: "March 19, 2025",
+            content: "I accomplished nothing today.",
+            comments: [
+                {
+                    user: "Jane Smith",
+                    text: "You're doing great!",
+                    timestamp: "March 20, 2025"
+                },
+            ],
+        },
+        {
+            id: 2,
+            title: "Jane Smith",
+            date: "March 20, 2025",
+            content: "I'm feeling motivated today!",
+            comments: [],
+        },
+        ];
+
         // State to store posts data
         const [posts, setPosts] = useState(mockPosts); 
+
+        //State to store groups associated with each user
+        const [groups, setGroups] = useState([]);
         
         // State to store comments for each post. 
         // The key is the post ID, and the value is an array of comments for that post.
@@ -70,31 +97,50 @@ function Feed() {
                 user: "User123" // The user who posted the comment (Replace to be dynamic based on the logged-in user)
             }
 
-            setComments((prevComments) => ({
-                ...prevComments, // Keep existing comments for other posts
-                [postId]: [...(prevComments[postId] || []), newComment] // Add the new comment to the post's array
-            }));
+            setPosts((prevPosts) => 
+                prevPosts.map((post) =>
+                    post.id === postId
+                    ? { ...post, comments: [...post.comments, newComment] }
+                    : post
+                )
+            );
             setShowCommentInput(null); // Hide the input field after the comment is submitted
+        };
+
+        const handleGroupClick = (groupId)  => {
+            console.log("Group ${groupId} clicked");
+            // For now, log the group ID
+            // In the future, fetch posts for the selected group from the database
         };
       
     
     return(
         <>
-            
-            
             <nav className="navbar bg-body-tertiary">
                 <div className="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
                     <div className="bg-dark p-4">
                         <h5 className="text-body-emphasis h4">My Groups</h5>
                         {/*Dynamically add groups member is a part of.  When clicked, go to that groups feed.*/}
-                        <span className="text-body-secondary">Toggleable via the navbar brand.</span>
+                        <ul className = "list-unstyled">
+                            {groups.map((group) => (
+                                <li key={group.id}>
+                                    <a 
+                                        href="#" 
+                                        className="text-body-secondary d-block" 
+                                        onClick={(e) => {
+                                            e.preventDefault(); 
+                                            handleGroupClick(group.id);
+                                        }}>
+                                            {group.name}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
                 <div className="container-fluid">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon">
-                            
-                        </span>
+                        <span className="navbar-toggler-icon"></span>
                     </button>
                     <a className="navbar-brand">TaskFeed</a>
                     <form className="d-flex" role="search">
@@ -105,62 +151,56 @@ function Feed() {
             </nav> 
 
             {/*Retrieving Posts*/}
-            <ul className="list-group">
-                {posts.map((post) => (
-                    <li className="list-group-item" key={post.id}>
-                        <input className="form-check-input me-1" type="checkbox" value="" id="firstCheckbox"/>
-                        <label className="form-check-label" htmlFor="firstCheckbox">
-                        <div className="card" style={cards}>
-                            <div className="card-body">
-                                <h5 className="card-title">{post.title}</h5>
-                                <h6 className="card-subtitle mb-2 text-body-secondary"><small>{post.date}</small></h6>
-                                <br/>
-                                <p className="card-text">{post.content}</p>
-                                {/*How to pull attachments and display with text*/}
-                                {/*Button to add comment to post*/}                    
-                                <a  href="#" 
-                                    className="card-link" 
-                                    onClick={(e) => {
-                                        e.preventDefault(); 
-                                        handleCommentClick(post.id);
-                                    }}>
-                                            Comment
-                                </a>
-                                {/* Input field for adding a comment (visible only for the selected post) */}
-                                {showCommentInput === post.id && ( // Replace `1` with the unique post ID
-                                    <div>
-                                        <input
-                                            type="text"
-                                            className="form-control mt-2"
-                                            placeholder="Add a comment"
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter') {
-                                                    handleCommentSubmit(post.id, e.target.value); // Replace `1` with the unique post ID
-                                                    e.target.value = ''; // Clear the input field
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                                {/* Display list of comments for the post */}
-                                <ul className="mt-2">
-                                    {post.comments.map((comment, index) => ( // Replace `1` with the unique post ID
-                                        <li key={index}>
-                                            <strong>{comment.user}</strong>: {comment.text}
-                                            <br />
-                                            <small className="text-muted">{comment.timestamp}</small>
-                                        </li>
-
-                                    ))}
-                                </ul>
+            <div className="container mt-4">
+                <h1 className="mb-4 text-center">TaskFeed</h1>
+                    {posts.map((post) => (
+                        <div className="mb-4" key={post.id}>
+                            <div className="card" style={cards}>
+                                <div className="card-body">
+                                    <h5 className="card-title">{post.title}</h5>
+                                    <h6 className="card-subtitle mb-2 text-body-secondary">
+                                        <small>{post.date}</small>
+                                    </h6>
+                                    <p className="card-text">{post.content}</p>
+                                    <a
+                                        href="#"
+                                        className="card-link"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleCommentClick(post.id);
+                                        }}
+                                    >
+                                        Comment
+                                    </a>
+                                    {showCommentInput === post.id && (
+                                        <div>
+                                            <input
+                                                type="text"
+                                                className="form-control mt-2"
+                                                placeholder="Add a comment"
+                                                onKeyDown={(e) => {
+                                                    if (e.key === "Enter") {
+                                                        handleCommentSubmit(post.id, e.target.value);
+                                                        e.target.value = ""; // Clear the input field
+                                                    }
+                                                }}
+                                            />
+                                        </div>
+                                    )}
+                                    <ul className="mt-2">
+                                        {post.comments.map((comment, index) => (
+                                            <li key={index}>
+                                                <strong>{comment.user}</strong>: {comment.text}
+                                                <br />
+                                                <small className="text-muted">{comment.timestamp}</small>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             </div>
-                        </div>          
-                        </label>
-                    </li>
-                ))}
-            </ul>
-                          
-            
+                        </div>
+                    ))}
+                </div>
         </>
     )
 }
