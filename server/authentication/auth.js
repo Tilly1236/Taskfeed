@@ -54,6 +54,7 @@ function auth() {
 
 
 		res.locals.id = payload.id
+		res.locals.username = payload.username
 
 		return next();
 	  };
