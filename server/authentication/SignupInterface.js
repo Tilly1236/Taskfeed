@@ -9,8 +9,8 @@ import process from 'process';
 class SignupInterface
 {   
 
-    static increment = process.env.START_INC || 100000000000;
-    static inc = process.env.INC || 1234;
+    static increment = parseFloat(process.env.START_INC) || 100000000000;
+    static add = parseInt(process.env.ADD) || 1234;
 
     static
     {
@@ -18,7 +18,7 @@ class SignupInterface
         let last = AuthDatabase.last_userid;
         if (last)
         {
-            this.increment = parseInt(last) + 2231;
+            SignupInterface.increment = parseInt(last) + SignupInterface.add;
         }
 
         
@@ -31,9 +31,9 @@ class SignupInterface
            throw new SignupError("Username is in use.");
         }
 
-        let userid = String(this.increment);
+        let userid = String(SignupInterface.increment);
 
-        this.increment += this.inc;
+        SignupInterface.increment += SignupInterface.add;;
         let hash = AuthShared.hash(password);
 
 
