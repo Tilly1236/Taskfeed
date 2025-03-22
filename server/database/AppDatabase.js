@@ -14,8 +14,10 @@ class AppDatabase
 
             // users
             this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, username TEXT UNIQUE) ").run();
+
+            // posts
+            this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid TEXT PRIMARY KEY, userid TEXT, groupid TEXT, created_at INTEGER, textcontent TEXT, images INTEGER)").run();
         }
-        
     }
 
     static add_user(userid, username)
@@ -31,6 +33,16 @@ class AppDatabase
     static get_userid(username)
     {
         return this.db.prepare("SELECT userid FROM users WHERE username = ?").get(username)['userid'];
+    }
+
+    static add_post(postid, userid, groupid, textcontent, hasimages)
+    {
+        this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
+    }
+
+    static get last_postid()
+    {
+        return this.db.prepare("SELECT MAX(postid) FROM posts LIMIT 1;").get()['MAX(postid)']
     }
 
 }
