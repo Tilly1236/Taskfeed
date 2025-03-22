@@ -9,6 +9,19 @@ signup.use(express.json());
 signup.post('/', (req, res) =>{
 
 	if (!req.body) return res.sendStatus(400)
+	
+	if (!req.body.username)
+	{
+		res.status(409);
+		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+	}
+
+	if (!req.body.password)
+	{
+		res.status(409);
+		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+	}
+	
 
 	try
 	{
