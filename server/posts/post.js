@@ -1,12 +1,12 @@
 import express from 'express';
 
 import PostInterface from './PostInterface.js';
-import auth from '../authentication/auth.js';
+import authentication from '../authentication/authentication.js';
 
 const post = express.Router();
 
 post.use(express.json());
-post.use(auth());
+post.use(authentication());
 
 post.post('/', (req, res) => {
 

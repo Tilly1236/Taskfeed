@@ -2,7 +2,7 @@
 import JsonWebToken from './JsonWebToken.js';
 import AuthError from '../errors/AuthError.js';
 
-function auth() {
+function authentication() {
 	return function auth(req, res, next){
 		
 		let verification
@@ -60,4 +60,4 @@ function auth() {
 	  };
   }
 
-export default auth;
+export default authentication;
