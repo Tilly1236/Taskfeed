@@ -12,7 +12,7 @@ class AuthDatabase
             this.db = new Database('./server/database/AuthDatabase.sqlite3');
             this.db.pragma('journal_mode = WAL');
 
-            this.db.prepare("CREATE TABLE IF NOT EXISTS auth (userid TEXT PRIMARY KEY, hash TEXT) ").run();
+            this.db.prepare("CREATE TABLE IF NOT EXISTS auth (userid INTEGER PRIMARY KEY, hash TEXT) ").run();
         }
         
     }

@@ -13,10 +13,10 @@ class AppDatabase
             this.db.pragma('journal_mode = WAL');
 
             // users
-            this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid TEXT PRIMARY KEY, username TEXT UNIQUE) ").run();
+            this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid INTEGER PRIMARY KEY, username TEXT UNIQUE) ").run();
 
             // posts
-            this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid TEXT PRIMARY KEY, userid TEXT, groupid TEXT, created_at INTEGER, textcontent TEXT, images INTEGER)").run();
+            this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid INTEGER PRIMARY KEY, userid INTEGER, groupid INTEGER, created_at INTEGER, textcontent TEXT, hasImages INTEGER)").run();
         }
     }
 
