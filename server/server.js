@@ -2,11 +2,13 @@ import express from 'express';
 import api from './api.js'
 
 import process from 'process'
+import auth from './auth.js';
 
 const app = express()
 const port = process.env.PORT || 3000
 
 app.use('/api', api);
+app.use('/auth', auth);
 
 app.get('/', (req, res) => {
   res.send("Hello World")
