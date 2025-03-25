@@ -3,6 +3,17 @@ import api from './api.js'
 
 import process from 'process'
 import auth from './auth.js';
+import AuthDatabase from './database/AuthDatabase.js';
+import AppDatabase from './database/AppDatabase.js';
+
+process.on('SIGINT', () => {
+  console.log('Server received SIGINT signal (Ctrl+C). Shutting down...');
+
+  AuthDatabase.db.close();
+  AppDatabase.db.close();
+
+  process.exit(0);
+});
 
 const app = express()
 const port = process.env.PORT || 3000
