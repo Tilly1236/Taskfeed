@@ -4,8 +4,6 @@ import SignupError from '../errors/SignupError.js';
 
 const signup = express.Router();
 
-signup.use(express.json());
-
 signup.post('/', (req, res) =>{
 
 	if (!req.body) return res.sendStatus(400)

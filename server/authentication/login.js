@@ -7,8 +7,6 @@ import JsonWebToken from './JsonWebToken.js';
 
 const login = express.Router();
 
-login.use(express.json());
-
 login.post('/', (req, res) => {
 
 	let query
