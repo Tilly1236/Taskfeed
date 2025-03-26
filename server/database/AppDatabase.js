@@ -42,7 +42,7 @@ class AppDatabase
 
     static get_posts(created_at, groupid)
     {
-        return this.db.prepare("SELECT * FROM posts WHERE created_at>? AND groupid=? ORDER BY created_at DESC LIMIT 20 ").all(created_at, groupid);
+        return this.db.prepare("SELECT * FROM posts WHERE created_at<? AND groupid=? ORDER BY created_at DESC LIMIT 20 ").all(created_at, groupid);
     }
 
     static get last_postid()
