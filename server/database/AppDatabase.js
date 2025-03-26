@@ -40,6 +40,11 @@ class AppDatabase
         this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
     }
 
+    static get_posts(created_at, groupid)
+    {
+        return this.db.prepare("SELECT * FROM posts WHERE created_at>? AND groupid=? ORDER BY created_at DESC LIMIT 20 ").all(created_at, groupid);
+    }
+
     static get last_postid()
     {
         return this.db.prepare("SELECT MAX(postid) FROM posts LIMIT 1;").get()['MAX(postid)']
