@@ -43,7 +43,7 @@ signup.post('/', (req, res) =>{
 
 	res.set({'Content-Type': 'application/json' });
 	res.status(201);
-	return res.send({ status : 'Created', message: '' });
+	return res.send({ status : 'Created', message: 'Success' });
 
 })
 
