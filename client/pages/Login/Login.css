@@ -1,0 +1,26 @@
+#Logo{
+    position: absolute;
+    top: 1em;
+    right: 10em;
+    border: 3px solid black;
+    padding: 0em 8em 0em 8em;
+    color: blue;
+    
+    
+}
+
+.words{
+    position: absolute;
+    left: 18em;
+    top: 12em;
+    color: black;
+}
+
+#signIn{
+    position: absolute;
+    bottom: 10em;
+}
+
+body{
+    background-color: white;
+}
