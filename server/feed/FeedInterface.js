@@ -2,10 +2,10 @@ import AppDatabase from "../database/AppDatabase.js";
 
 class FeedInterface
 {
-	static getfeed(created_at, groupid)
+	static getfeed(groupid, latest, earliest=0)
 	{
 		
-		let feeds = AppDatabase.get_posts(created_at, groupid);
+		let feeds = AppDatabase.get_posts(groupid, latest, earliest);
 
 		return feeds;
 	}

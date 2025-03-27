@@ -10,12 +10,18 @@ feed.use(authentication());
 
 feed.post('/', (req, res) => {
 	
-	if (!req.body.created_at)
+	
+	if (!req.body.groupid)
 	{
 		res.status(409);
 		return res.send({ status : 'ERROR', message: 'Request is not complete' });
 	}
-	if (!req.body.groupid)
+	if (!req.body.latest)
+	{
+		res.status(409);
+		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+	}
+	if (!req.body.earliest)
 	{
 		res.status(409);
 		return res.send({ status : 'ERROR', message: 'Request is not complete' });
@@ -25,7 +31,7 @@ feed.post('/', (req, res) => {
 	let listFeed
 
 	try {
-		listFeed = FeedInterface.getfeed(req.body.created_at, req.body.groupid);
+		listFeed = FeedInterface.getfeed(req.body.groupid, req.body.latest, req.body.earliest);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send("Internal Server Error");

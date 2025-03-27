@@ -40,9 +40,9 @@ class AppDatabase
         this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
     }
 
-    static get_posts(created_at, groupid)
+    static get_posts(groupid, latest, earliest=0)
     {
-        return this.db.prepare("SELECT * FROM posts WHERE created_at<? AND groupid=? ORDER BY created_at DESC LIMIT 20 ").all(created_at, groupid);
+        return this.db.prepare("SELECT * FROM posts WHERE created_at<? AND created_at>=? AND groupid=? ORDER BY created_at DESC LIMIT 20 ").all(latest, earliest, groupid);
     }
 
     static get last_postid()
