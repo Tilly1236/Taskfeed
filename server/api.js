@@ -1,12 +1,13 @@
-import express from 'express';
+import {Router} from 'express';
 
-const app = express()
-const port = 3000
+import post from './posts/post.js';
+import feed from './feed/feed.js';
 
-app.get('/', function (req, res) {
-    res.json({ Test: 'test' });
-});
+const api = Router();
 
-app.listen(port, () => {
-  console.log(`Taskfeed Server: listening on port ${port}`)
-})
+api.use('/post', post)
+api.use('/feed', feed);
+
+export default api;
+
+
