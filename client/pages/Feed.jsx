@@ -147,12 +147,13 @@ function Feed() {
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
+                    <button type="button" class="btn btn-primary">+</button>
                 </div>
             </nav> 
 
             {/*Retrieving Posts*/}
             <div className="container mt-4">
-                <h1 className="mb-4 text-center">TaskFeed</h1>
+                {/*<h1 className="mb-4 text-center">TaskFeed</h1>*/}
                     {posts.map((post) => (
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
