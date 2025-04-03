@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import { useEffect } from "react";
 import { feedFetch } from "./feedfetch";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom"; 
 
 const cards = {
     width: "100%", // Make the card take full width of its container
@@ -13,7 +14,31 @@ const cards = {
 
 
 function Feed() {
-    
+        const location = useLocation(); // Hook to access location state
+
+        useEffect(() => {
+            console.log('Location state: ', location.state);
+            // check if the state indicates a refresh
+            if (location.state?.refresh) {
+                console.log('Refreshing posts...');
+                fetchPosts();
+            }
+        }, [location.state]);
+
+        const fetchPosts = async () => {
+            try{
+                //simulate fetching posts from a database
+                const fetchedPosts = await feedFetch();
+                console.log('Fetched posts: ', fetchedPosts);
+                setPosts(fetchedPosts);
+            }
+            catch (error) {
+                console.error('Error fetching posts: ', error);
+            }
+            
+        };
+
+
         useEffect(() => {
 
             //Simulate fetching groups from a database
@@ -30,7 +55,7 @@ function Feed() {
             fetchGroups();
         }, []);
     
-        useEffect(() => {
+       /* useEffect(() => {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
@@ -38,36 +63,12 @@ function Feed() {
             };
         
             fetchPosts();
-        }, [])
+        }, [])*/
         
 
         
-        // Mock data for posts (replace this with data fetched from the database later)
-        const mockPosts = [
-        {
-            id: 1,
-            title: "John Doe",
-            date: "March 19, 2025",
-            content: "I accomplished nothing today.",
-            comments: [
-                {
-                    user: "Jane Smith",
-                    text: "You're doing great!",
-                    timestamp: "March 20, 2025"
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: "Jane Smith",
-            date: "March 20, 2025",
-            content: "I'm feeling motivated today!",
-            comments: [],
-        },
-        ];
-
+        
         const navigate = useNavigate();
-        
         // State to store posts data
         const [posts, setPosts] = useState([]); 
 

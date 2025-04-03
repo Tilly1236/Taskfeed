@@ -25,7 +25,7 @@ const AddPostPage = () => {
       setMessage('');
 
       //  Redirect to /feed after successful post
-      navigate('/feed');
+      navigate('/feed', {state: {refresh: true}}); // Pass refresh state to trigger feed refresh
     } catch (err) {
       console.error('Post error:', err);
       setError(err.message || 'Something went wrong.');
