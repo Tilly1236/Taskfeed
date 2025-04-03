@@ -6,7 +6,7 @@ const AddPostPage = () => {
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // 👈 hook for redirect
+  const navigate = useNavigate(); //  hook for redirect
 
   const handleSubmit = async (e) => {
     e.preventDefault();
