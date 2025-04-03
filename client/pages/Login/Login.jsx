@@ -3,6 +3,7 @@ import reactLogo from '/react.svg';
 import viteLogo from '/vite.svg';
 import Constant from '../../Constants.js';
 import './Login.css';
+import { loginFetch } from './loginfetch.js';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -13,26 +14,7 @@ function Login() {
     e.preventDefault();
     setError('');
 
-    try {
-      const response = await fetch(`${Constant.API_URL}/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('Login successful:', data);
-        // Redirect or handle successful login
-      } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Invalid credentials');
-      }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
-    }
+    loginFetch(email, password).catch((error) => (setError(error.message)));
   };
 
   return (
