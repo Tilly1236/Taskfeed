@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import { useEffect } from "react";
 import { feedFetch } from "./feedfetch";
+import { useNavigate } from "react-router-dom";
 
 const cards = {
     width: "100%", // Make the card take full width of its container
@@ -65,6 +66,8 @@ function Feed() {
         },
         ];
 
+        const navigate = useNavigate();
+        
         // State to store posts data
         const [posts, setPosts] = useState([]); 
 
@@ -148,7 +151,10 @@ function Feed() {
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <button type="button" className="btn btn-primary">+</button>
+                    <button 
+                        type="button" 
+                        className="btn btn-primary"
+                        onClick={() => navigate("/add")}>+</button>
                 </div>
             </nav> 
 
