@@ -11,14 +11,12 @@ export async function signupFetch(username, password) {
       body: JSON.stringify({ username, password })
     });
 
-    if (!response.ok) {
-      throw new Error(`Signup failed with status ${response.status}`);
-    }
-
     const data = await response.json(); // Should be: { status: "Created", message: "Success" }
 
-    // Store the message in localStorage (e.g., a token or success message)
-    localStorage.setItem("token", data["message"]);
+    if (!response.ok) {
+      throw new Error(data['message']);
+    }
+
 
     return data;
   } catch (error) {
