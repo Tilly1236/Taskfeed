@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = "https://taskfeed.onrender.com"; // or localhost if testing locally
 
 export async function postToFeed(message, token) {
   if (!token) {
@@ -13,6 +13,7 @@ export async function postToFeed(message, token) {
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
+        group: 1, // this is what David said is needed
         textcontent: message
       }),
     });
