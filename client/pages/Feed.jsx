@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useEffect } from "react";
+import { feedFetch } from "./feedfetch";
 
 const cards = {
     width: "100%", // Make the card take full width of its container
@@ -14,6 +15,7 @@ function Feed() {
 
         
         useEffect(() => {
+
             //Simulate fetching groups from a database
             const fetchGroups = async () => {
                 // Replace this with an actual API call when database is set up
@@ -32,13 +34,13 @@ function Feed() {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
-                const fetchedPosts = mockPosts;
-                setPosts(fetchedPosts);
+                feedFetch().then((value) => (setPosts(value)))
             };
         
             fetchPosts();
         }, [])
         
+
         
         // Mock data for posts (replace this with data fetched from the database later)
         const mockPosts = [
@@ -65,7 +67,7 @@ function Feed() {
         ];
 
         // State to store posts data
-        const [posts, setPosts] = useState(mockPosts); 
+        const [posts, setPosts] = useState([]); 
 
         //State to store groups associated with each user
         const [groups, setGroups] = useState([]);
@@ -147,7 +149,7 @@ function Feed() {
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <button type="button" class="btn btn-primary">+</button>
+                    <button type="button" className="btn btn-primary">+</button>
                 </div>
             </nav> 
 
@@ -158,11 +160,11 @@ function Feed() {
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
                                 <div className="card-body">
-                                    <h5 className="card-title">{post.title}</h5>
+                                    <h5 className="card-title">{post.username}</h5>
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
                                         <small>{post.date}</small>
                                     </h6>
-                                    <p className="card-text">{post.content}</p>
+                                    <p className="card-text">{post.textcontent}</p>
                                     <a
                                         href="#"
                                         className="card-link"
@@ -173,7 +175,7 @@ function Feed() {
                                     >
                                         Comment
                                     </a>
-                                    {showCommentInput === post.id && (
+                                    {/* {showCommentInput === post.id && (
                                         <div>
                                             <input
                                                 type="text"
@@ -196,7 +198,7 @@ function Feed() {
                                                 <small className="text-muted">{comment.timestamp}</small>
                                             </li>
                                         ))}
-                                    </ul>
+                                    </ul> */}
                                 </div>
                             </div>
                         </div>

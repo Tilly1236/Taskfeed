@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from "react-router";
+import { signupFetch } from './signupfetch';
 
 function CreateAccount() {
   const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ function CreateAccount() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     //Give the user feedback on any incomplete or incorrect information
     if(!username){
         setError("Please provide a username");
@@ -24,6 +25,8 @@ function CreateAccount() {
         setError("Passwords do not match");
         return;
     }
+    
+    signupFetch(username, password).catch((error) => (setError(error.message)));
 
     //Reset the feedback for future use
     setError('');

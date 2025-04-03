@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import api from './api.js'
 
 import process from 'process'
@@ -19,6 +20,22 @@ const app = express()
 const port = process.env.PORT || 3000
 
 app.use(express.json());
+
+app.use(cors())
+
+// app.use(function (req, res, next) {
+
+//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
+
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+
+//   res.setHeader('Access-Control-Allow-Credentials', true);
+
+//   next();
+// });
 
 // Catching json syntax error from the json middleware
 app.use((err, req, res, next) => {
