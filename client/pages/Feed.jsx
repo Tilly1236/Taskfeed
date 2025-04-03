@@ -34,12 +34,9 @@ function Feed() {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
-<<<<<<< HEAD
                 const fetchedPosts = feedFetch(postid, userid, groupid, created_at, textcontent, hasImages);
                 setPosts(fetchedPosts);
-=======
                 feedFetch().then((value) => (setPosts(value)))
->>>>>>> 2683742c6897fca12fbc56018f0e7665d207ac71
             };
         
             fetchPosts();
@@ -72,7 +69,7 @@ function Feed() {
         ];
 
         // State to store posts data
-        const [posts, setPosts] = useState(mockPosts); 
+        const [posts, setPosts] = useState(fetchedPosts); 
 
         //State to store groups associated with each user
         const [groups, setGroups] = useState([]);
