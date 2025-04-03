@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { postToFeed } from './postfetch'; // adjust path if needed
+import { useNavigate } from 'react-router-dom';
+import { postToFeed } from './postfetch';
 
 const AddPostPage = () => {
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate(); // 👈 hook for redirect
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,11 +20,14 @@ const AddPostPage = () => {
     }
 
     try {
-      await postToFeed(message, token); // token has username info
+      await postToFeed(message, token);
       setSuccess(true);
       setMessage('');
+
+      //  Redirect to /feed after successful post
+      navigate('/feed');
     } catch (err) {
-      console.error(err);
+      console.error('Post error:', err);
       setError(err.message || 'Something went wrong.');
     }
   };
