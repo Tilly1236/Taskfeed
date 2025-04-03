@@ -162,7 +162,7 @@ function Feed() {
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
                                         <small>{post.date}</small>
                                     </h6>
-                                    <p className="card-text">{post.content}</p>
+                                    <p className="card-text">{post.textcontent}</p>
                                     <a
                                         href="#"
                                         className="card-link"
@@ -173,6 +173,7 @@ function Feed() {
                                     >
                                         Comment
                                     </a>
+                                    {/*}
                                     {showCommentInput === post.id && (
                                         <div>
                                             <input
@@ -196,7 +197,7 @@ function Feed() {
                                                 <small className="text-muted">{comment.timestamp}</small>
                                             </li>
                                         ))}
-                                    </ul>
+                                    </ul>*/}
                                 </div>
                             </div>
                         </div>
