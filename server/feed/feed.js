@@ -14,17 +14,17 @@ feed.post('/', (req, res) => {
 	if (!req.body.groupid)
 	{
 		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+		return res.send({ status : 'ERROR', message: 'Missing groupid' });
 	}
 	if (!req.body.latest)
 	{
 		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+		return res.send({ status : 'ERROR', message: 'Missing latest' });
 	}
 	if (!req.body.earliest)
 	{
 		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+		return res.send({ status : 'ERROR', message: 'Missing earliest' });
 	}
 
 
