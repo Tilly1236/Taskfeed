@@ -13,7 +13,7 @@ export async function postToFeed(message, token) {
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
-        group: 1, // this is what David said is needed
+        groupid: 1, // this is what David said is needed
         textcontent: message
       }),
     });
