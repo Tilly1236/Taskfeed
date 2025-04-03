@@ -1,15 +1,24 @@
-// 1) Create an array to hold posts
+// Array to store posts
 const posts = [];
 
-// 2) Create a post object
-const newPost = {
-  date: "2025-04-01",
-  user: "Admin",
-  comment: "Hello from a script without any UI!"
-};
+// Function to add a post
+function addPost(user, comment, date) {
+  if (!comment) {
+    console.log("Comment is required.");
+    return;
+  }
 
-// 3) Add the new post object to the array
-posts.push(newPost);
+  const newPost = {
+    user: user || "Guest",
+    comment,
+    date: date || new Date().toISOString().split("T")[0]
+  };
 
-// 4) Check the result
+  posts.push(newPost);
+  console.log("Post added:", newPost);
+}
+
+// Example usage
+addPost("Admin", "This is a test post", "2025-04-01");
+addPost("Tilly", "Second post!");
 console.log("Current posts array:", posts);
