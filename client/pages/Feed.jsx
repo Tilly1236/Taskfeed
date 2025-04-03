@@ -15,6 +15,7 @@ function Feed() {
 
         
         useEffect(() => {
+
             //Simulate fetching groups from a database
             const fetchGroups = async () => {
                 // Replace this with an actual API call when database is set up
@@ -33,8 +34,12 @@ function Feed() {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
+<<<<<<< HEAD
                 const fetchedPosts = feedFetch(postid, userid, groupid, created_at, textcontent, hasImages);
                 setPosts(fetchedPosts);
+=======
+                feedFetch().then((value) => (setPosts(value)))
+>>>>>>> 2683742c6897fca12fbc56018f0e7665d207ac71
             };
         
             fetchPosts();
@@ -160,7 +165,7 @@ function Feed() {
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
                                 <div className="card-body">
-                                    <h5 className="card-title">{post.title}</h5>
+                                    <h5 className="card-title">{post.username}</h5>
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
                                         <small>{post.date}</small>
                                     </h6>
@@ -175,8 +180,7 @@ function Feed() {
                                     >
                                         Comment
                                     </a>
-                                    {/*}
-                                    {showCommentInput === post.id && (
+                                    {/* {showCommentInput === post.id && (
                                         <div>
                                             <input
                                                 type="text"
@@ -199,7 +203,7 @@ function Feed() {
                                                 <small className="text-muted">{comment.timestamp}</small>
                                             </li>
                                         ))}
-                                    </ul>*/}
+                                    </ul> */}
                                 </div>
                             </div>
                         </div>

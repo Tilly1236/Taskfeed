@@ -15,7 +15,7 @@ function Login() {
     e.preventDefault();
     setError('');
 
-    loginFetch(email, password).catch((error) => (setError(error.message)));
+    loginFetch(username, password).catch((error) => (setError(error.message)));
   };
 
   return (
