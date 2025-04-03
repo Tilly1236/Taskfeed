@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useEffect } from "react";
+import { feedFetch } from "./feedfetch";
 
 const cards = {
     width: "100%", // Make the card take full width of its container
@@ -14,6 +15,7 @@ function Feed() {
 
         
         useEffect(() => {
+
             //Simulate fetching groups from a database
             const fetchGroups = async () => {
                 // Replace this with an actual API call when database is set up
@@ -32,8 +34,7 @@ function Feed() {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
-                const fetchedPosts = mockPosts;
-                setPosts(fetchedPosts);
+                feedFetch().then((value) => (setPosts(value)))
             };
         
             fetchPosts();
@@ -158,7 +159,7 @@ function Feed() {
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
                                 <div className="card-body">
-                                    <h5 className="card-title">{post.title}</h5>
+                                    <h5 className="card-title">{post.username}</h5>
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
                                         <small>{post.date}</small>
                                     </h6>
@@ -173,8 +174,7 @@ function Feed() {
                                     >
                                         Comment
                                     </a>
-                                    {/*}
-                                    {showCommentInput === post.id && (
+                                    {/* {showCommentInput === post.id && (
                                         <div>
                                             <input
                                                 type="text"
@@ -197,7 +197,7 @@ function Feed() {
                                                 <small className="text-muted">{comment.timestamp}</small>
                                             </li>
                                         ))}
-                                    </ul>*/}
+                                    </ul> */}
                                 </div>
                             </div>
                         </div>

@@ -1,23 +1,22 @@
 // signupfetch.js
 const BASE_URL = 'http://localhost:3000'; // Update this if needed
 
-export async function signupFetch(username, password) {
+export async function feedFetch() {
   try {
-    const response = await fetch(`${BASE_URL}/auth/signup`, {
+    const response = await fetch(`${BASE_URL}/api/feed`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({
+        "groupid": 1,
+        "latest": Math.floor(Date.now() / 1000),
+        "earliest": 1
+        })
     });
 
     const data = await response.json(); // Should be: { status: "Created", message: "Success" }
-
-    if (!response.ok) {
-      throw new Error(data['message']);
-    }
-
 
     return data;
   } catch (error) {
