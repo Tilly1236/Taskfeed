@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postToFeed } from './postfetch';
+import { postToFeed } from './postfetch'; // adjust path if needed
 
 const AddPostPage = () => {
   const [message, setMessage] = useState('');
@@ -11,19 +11,18 @@ const AddPostPage = () => {
     setSuccess(false);
     setError('');
 
-    const token = localStorage.getItem("token");
-
+    const token = localStorage.getItem('token');
     if (!token) {
-      setError("You must be logged in to post.");
+      setError('You must be logged in to post.');
       return;
     }
 
     try {
-      await postToFeed(message, token);
+      await postToFeed(message, token); // token has username info
       setSuccess(true);
       setMessage('');
     } catch (err) {
-      console.error("Post error:", err);
+      console.error(err);
       setError(err.message || 'Something went wrong.');
     }
   };
