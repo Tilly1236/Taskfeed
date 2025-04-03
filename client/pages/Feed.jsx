@@ -118,7 +118,26 @@ function Feed() {
             // In the future, fetch posts for the selected group from the database
         };
       
-    
+        {/*start of filter button/menu const and functions - Rachel*/}
+        const [filterVisible, setFilterVisible] = useState(false); {/*State to control visibility of filter menu*/}
+        const [dateFilter, setDateFilter] = useState("");
+        const [typeFiler, setTypeFilter] = useState("");
+        const [posterFilter, setPosterFilter] = useState(""); {/*States for storing*/}
+
+        const applyFilters = () => { {/*Function to apply filters and hide filter menu*/}
+            console.log([dateFilter,typeFiler,posterFilter]);{/*logs selected filters for debugging purposes*/}
+            setFilterVisible(false); 
+        }
+        {/*end of filter button/menu const and functions*/}
+
+        {/*Start of filtering logic for posts - Rachel*/}
+        const filteredPosts = posts.filter(post => {
+            if(dateFilter && post.date !== dateFilter) return false;
+            if(typeFilter && post.type !== typeFilter) return false;
+            if(posterFilter && !post.title.toLowerCase().includes(posterFilter.toLowerCase())) return false;
+            return true;
+        }); {/*End of filtering logic for posts*/}
+        
     return(
         <>
             <nav className="navbar bg-body-tertiary">
