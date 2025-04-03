@@ -55,7 +55,7 @@ function Feed() {
             fetchGroups();
         }, []);
     
-       /* useEffect(() => {
+       useEffect(() => {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
@@ -63,7 +63,7 @@ function Feed() {
             };
         
             fetchPosts();
-        }, [])*/
+        }, [])
         
 
         
