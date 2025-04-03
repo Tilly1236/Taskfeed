@@ -175,8 +175,42 @@ function Feed() {
                         type="button" 
                         className="btn btn-primary"
                         onClick={() => navigate("/add")}>+</button>
-                </div>
-            </nav> 
+                </div> 
+                    {/*start of filter button/menu - Rachel*/}
+                    <button type="button" className="btn btn-secondary" onClick={() => setFilterVisible(!filterVisible)}>
+                        {filterVisible ? "Hide Filters" : "Show Filters"} {/*Toggle button text (not useful atm)*/}
+                    </button>
+                    {filterVisible && (
+                        <div className="position-absolute end-0 me-3 p-3 border rounded mt-2 bg-dark shadow-sm" style={{width:"200px"}}>
+                            <label className="form-label">Date:</label> {/*Filter by date*/}
+                            <input type="date" className="form-control mb-2" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}/>
+
+                            <label className="form-label">User:</label> {/*Filter by user*/}
+                            <input type="text" className="form-control mb-2" placeholder="Username" value={posterFilter} onChange={(e) => setPosterFilter(e.target.value)}/>
+
+                            <label className="form-label">Type:</label> {/*Filter by data*/}
+                            <select className="form-control mb-2" value={typeFiler} onChange={(e) => setTypeFilter(e.target.value)}>
+                                <option value="">Select Type</option>
+                                <option value="text">Text Entry</option>
+                                <option value="image">Image</option>
+                            </select>
+
+                            <button className="btn btn-primary w-100" onClick={applyFilters}> {/*Apply button*/}
+                                Apply
+                            </button>
+                        </div>
+                    )} {/*end of filter button/menu*/}
+                    {/*Start of displaying filtered posts - Rachel*/}
+                    <div className="container mt-4">
+                        {filteredPosts.map((post) => (
+                            <div className="mb-4" key={post.id}>
+                               <h5>{post.title}</h5>
+                               <p>{post.date}</p>
+                               <p>{post.type}</p>
+                            </div>
+                        ))}
+                    </div>
+            </nav>
 
             {/*Retrieving Posts*/}
             <div className="container mt-4">
@@ -234,6 +268,7 @@ function Feed() {
 }
 
 export default Feed
+
 
 
 
