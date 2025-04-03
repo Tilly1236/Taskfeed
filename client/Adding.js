@@ -1,15 +1,30 @@
-// 1) Create an array to hold posts
-const posts = [];
+const handleAddPost = () => {
+  if (!comment.trim()) {
+    alert("Comment is required.");
+    return;
+  }
+  
+  const newPost = {
+    user: user || "Guest",
+    comment: comment.trim(),
+    date: new Date().toISOString().split("T")[0],
+  };
 
-// 2) Create a post object
-const newPost = {
-  date: "2025-04-01",
-  user: "Admin",
-  comment: "Hello from a script without any UI!"
+  // Make a POST request to the API endpoint
+  fetch("http://localhost:3000/api/posts", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newPost),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      // Update the posts state with the new post from the API response
+      setPosts(prevPosts => [data.post, ...prevPosts]);
+      setUser("");
+      setComment("");
+    })
+    .catch((error) => console.error("Error adding post:", error));
 };
 
-// 3) Add the new post object to the array
-posts.push(newPost);
-
-// 4) Check the result
-console.log("Current posts array:", posts);
