@@ -34,8 +34,6 @@ function Feed() {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
-                const fetchedPosts = feedFetch(postid, userid, groupid, created_at, textcontent, hasImages);
-                setPosts(fetchedPosts);
                 feedFetch().then((value) => (setPosts(value)))
             };
         
