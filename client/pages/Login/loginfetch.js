@@ -12,12 +12,14 @@ export async function loginFetch(username, password) {
       body: JSON.stringify({ username, password })
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error(`Login failed with status ${response.status}`);
+      throw new Error(data['message']);
     }
 
     // Should return { status: "OK", message: "<token>" }
-    const data = await response.json();
+    
     localStorage.setItem("token", data['message']);
     return data;
   } catch (error) {
