@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import { useEffect } from "react";
+import { feedFetch } from "./feedfetch";
 
 const cards = {
     width: "100%", // Make the card take full width of its container
@@ -32,13 +33,14 @@ function Feed() {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
-                const fetchedPosts = mockPosts;
+                const fetchedPosts = feedFetch(postid, userid, groupid, created_at, textcontent, hasImages);
                 setPosts(fetchedPosts);
             };
         
             fetchPosts();
         }, [])
         
+
         
         // Mock data for posts (replace this with data fetched from the database later)
         const mockPosts = [
@@ -147,7 +149,7 @@ function Feed() {
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <button type="button" class="btn btn-primary">+</button>
+                    <button type="button" className="btn btn-primary">+</button>
                 </div>
             </nav> 
 

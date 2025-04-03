@@ -1,9 +1,9 @@
 // signupfetch.js
 const BASE_URL = 'http://localhost:3000'; // Update this if needed
 
-export async function signupFetch(username, password) {
+export async function feedFetch() {
   try {
-    const response = await fetch(`${BASE_URL}/auth/signup`, {
+    const response = await fetch(`${BASE_URL}/api/feed`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
