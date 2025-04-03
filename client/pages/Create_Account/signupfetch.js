@@ -17,8 +17,7 @@ export async function signupFetch(username, password) {
 
     const data = await response.json(); // Should be: { status: "Created", message: "Success" }
 
-    // Store the message in localStorage (e.g., a token or success message)
-    localStorage.setItem("token", data["message"]);
+
 
     return data;
   } catch (error) {
