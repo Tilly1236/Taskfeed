@@ -1,4 +1,4 @@
-const BASE_URL = "https://taskfeed.onrender.com"; // or localhost if testing locally
+const BASE_URL = "http://localhost:3000"; // or localhost if testing locally
 
 export async function postToFeed(message, token) {
   if (!token) {
@@ -6,7 +6,7 @@ export async function postToFeed(message, token) {
   }
 
   try {
-    const response = await fetch(`${BASE_URL}/api/feed`, {
+    const response = await fetch(`${BASE_URL}/api/post`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
