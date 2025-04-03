@@ -13,7 +13,7 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/create_account" element={<CreateAccount />} />
     </Routes>
