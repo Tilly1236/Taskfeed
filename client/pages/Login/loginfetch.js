@@ -18,6 +18,7 @@ export async function loginFetch(username, password) {
 
     // Should return { status: "OK", message: "<token>" }
     const data = await response.json();
+    localStorage.setItem("token", data['message']);
     return data;
   } catch (error) {
     console.error('Error in loginFetch:', error);
