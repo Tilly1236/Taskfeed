@@ -17,10 +17,8 @@ function Feed() {
         const location = useLocation(); // Hook to access location state
 
         useEffect(() => {
-            console.log('Location state: ', location.state);
             // check if the state indicates a refresh
             if (location.state?.refresh) {
-                console.log('Refreshing posts...');
                 fetchPosts();
             }
         }, [location.state]);
@@ -29,7 +27,6 @@ function Feed() {
             try{
                 //simulate fetching posts from a database
                 const fetchedPosts = await feedFetch();
-                console.log('Fetched posts: ', fetchedPosts);
                 setPosts(fetchedPosts);
             }
             catch (error) {
@@ -55,7 +52,7 @@ function Feed() {
             fetchGroups();
         }, []);
     
-       /* useEffect(() => {
+       useEffect(() => {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
@@ -63,7 +60,7 @@ function Feed() {
             };
         
             fetchPosts();
-        }, [])*/
+        }, [])
         
 
         
@@ -215,13 +212,23 @@ function Feed() {
             {/*Retrieving Posts*/}
             <div className="container mt-4">
                 {/*<h1 className="mb-4 text-center">TaskFeed</h1>*/}
-                    {posts.map((post) => (
+                    {posts.map((post) => {
+                        const formattedDate = new Date(post.created_at * 1000).toLocaleString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                        });
+
+                        return(
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
                                 <div className="card-body">
                                     <h5 className="card-title">{post.username}</h5>
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
-                                        <small>{post.date}</small>
+                                        <small>{formattedDate}</small>
                                     </h6>
                                     <p className="card-text">{post.textcontent}</p>
                                     <a
@@ -261,7 +268,8 @@ function Feed() {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+})}
                 </div>
         </>
     )
