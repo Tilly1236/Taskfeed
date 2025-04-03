@@ -2,7 +2,7 @@ const BASE_URL = 'http://localhost:3000'; // Adjust if your backend is hosted el
 
 export async function postToFeed(username, message, token) {
   try {
-    const response = await fetch(`${BASE_URL}/api/feed/create`, {
+    const response = await fetch(`${BASE_URL}/api/feed`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
