@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { postToFeed } from './postfetch'; // import the new fetch helper
+import { postToFeed } from './postfetch'; // your helper
 
 const AddPostPage = () => {
   const [username, setUsername] = useState('');
@@ -12,14 +12,23 @@ const AddPostPage = () => {
     setSuccess(false);
     setError('');
 
-    const { success, data, error: fetchError } = await postToFeed(username, 1, message);
+    const token = localStorage.getItem("token"); // retrieve token
 
-    if (success) {
+    if (!token) {
+      setError("You must be logged in to post.");
+      return;
+    }
+
+    try {
+      const response = await postToFeed(username, message, token);
+      console.log("Post response:", response);
+
       setSuccess(true);
       setUsername('');
       setMessage('');
-    } else {
-      setError(data?.message || fetchError || 'Something went wrong.');
+    } catch (err) {
+      console.error(err);
+      setError(err.message || 'Something went wrong.');
     }
   };
 
@@ -57,5 +66,6 @@ const AddPostPage = () => {
 };
 
 export default AddPostPage;
+
 
 
