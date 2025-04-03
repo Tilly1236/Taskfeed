@@ -6,15 +6,15 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Sample from "./pages/Sample/Sample.jsx";
 import Feed from "./pages/Feed.jsx";
 import Login from "./pages/Login/Login.jsx";
+import CreateAccount from "./pages/Create_Account/create_account.jsx";
 
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Sample />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/feed" element={<Feed />} />
-      <Route path="/Login/Login" element={<Login />} />
     </Routes>
   </BrowserRouter>
 );
