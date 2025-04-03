@@ -67,7 +67,7 @@ function Feed() {
         ];
 
         // State to store posts data
-        const [posts, setPosts] = useState(fetchedPosts); 
+        const [posts, setPosts] = useState([]); 
 
         //State to store groups associated with each user
         const [groups, setGroups] = useState([]);
