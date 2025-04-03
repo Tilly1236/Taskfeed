@@ -11,8 +11,7 @@ const cards = {
 
 
 function Feed() {
-
-        
+    
         useEffect(() => {
             //Simulate fetching groups from a database
             const fetchGroups = async () => {
@@ -147,7 +146,7 @@ function Feed() {
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <button type="button" class="btn btn-primary">+</button>
+                    <button type="button" className="btn btn-primary">+</button>
                 </div>
             </nav> 
 
