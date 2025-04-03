@@ -3,10 +3,11 @@ import reactLogo from '/react.svg';
 import viteLogo from '/vite.svg';
 import Constant from '../../Constants.js';
 import './Login.css';
+import { Link } from "react-router";
 import { loginFetch } from './loginfetch.js';
 
 function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -30,12 +31,12 @@ function Login() {
 
       <form onSubmit={handleLogin}>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="username">Username:</label>
           <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="username"
+            id="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -54,6 +55,9 @@ function Login() {
           Sign in
         </button>
       </form>
+
+      <p>Don't have an account? </p>
+      <Link to="/create_account">Create Account</Link>
     </>
   );
 }
