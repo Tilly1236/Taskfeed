@@ -25,6 +25,7 @@ const AddPostPage = () => {
       setMessage('');
 
       //  Redirect to /feed after successful post
+      await new Promise(resolve => setTimeout(resolve, 3000)); // Adds 3 second to allow server add post to database before redirecting to /feed
       navigate('/feed', {state: {refresh: true}}); // Pass refresh state to trigger feed refresh
     } catch (err) {
       console.error('Post error:', err);
