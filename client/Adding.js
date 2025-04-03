@@ -12,7 +12,7 @@ const AddPostPage = () => {
     setError('');
 
     try {
-      const res = await fetch('http://localhost:3000/api/feed/create', {
+      const res = await fetch('http://localhost:3000/api/feed/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
