@@ -1,3 +1,4 @@
+import AddPostPage from "./pages/AddPost.jsx";
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
@@ -15,6 +16,8 @@ ReactDOM.createRoot(root).render(
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/feed" element={<Feed />} />
+      <Route path="/create_account" element={<CreateAccount />} />
+      <Route path="/add" element={<AddPostPage />} />
     </Routes>
   </BrowserRouter>
 );

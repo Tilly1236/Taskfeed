@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { postToFeed } from './postfetch'; // import the new fetch helper
 
 const AddPostPage = () => {
   const [username, setUsername] = useState('');
@@ -11,31 +12,14 @@ const AddPostPage = () => {
     setSuccess(false);
     setError('');
 
-    try {
-      const res = await fetch('http://localhost:3000/api/feed/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          username,
-          groupid: 1, // default group for now
-          textcontent: message
-        })
-      });
+    const { success, data, error: fetchError } = await postToFeed(username, 1, message);
 
-      if (res.ok) {
-        setSuccess(true);
-        setUsername('');
-        setMessage('');
-      } else {
-        const data = await res.json();
-        setError(data.message || 'Failed to post.');
-      }
-    } catch (err) {
-      console.error(err);
-      setError('Something went wrong.');
+    if (success) {
+      setSuccess(true);
+      setUsername('');
+      setMessage('');
+    } else {
+      setError(data?.message || fetchError || 'Something went wrong.');
     }
   };
 
@@ -73,3 +57,5 @@ const AddPostPage = () => {
 };
 
 export default AddPostPage;
+
+
