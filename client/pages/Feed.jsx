@@ -3,17 +3,16 @@ import { feedFetch } from "./feedfetch";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const cards = {
-  width: "100%", // Make the card take full width of its container
+  width: "100%",
   textAlign: "left",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // Add a subtle shadow
-  borderRadius: "8px", // Add rounded corners
+  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+  borderRadius: "8px",
 };
 
 function Feed() {
-  const location = useLocation(); // Hook to access location state
+  const location = useLocation();
   const navigate = useNavigate();
 
-  // State for posts, groups, comments, etc.
   const [posts, setPosts] = useState([]);
   const [groups, setGroups] = useState([]);
   const [comments, setComments] = useState({});
@@ -22,10 +21,8 @@ function Feed() {
   // Filter states
   const [filterVisible, setFilterVisible] = useState(false);
   const [dateFilter, setDateFilter] = useState("");
-  const [typeFilter, setTypeFilter] = useState("");
   const [posterFilter, setPosterFilter] = useState("");
 
-  // Fetch posts from the API
   const fetchPosts = async () => {
     try {
       const fetchedPosts = await feedFetch();
@@ -35,14 +32,12 @@ function Feed() {
     }
   };
 
-  // Check location state for refresh indicator
   useEffect(() => {
     if (location.state?.refresh) {
       fetchPosts();
     }
   }, [location.state]);
 
-  // Fetch groups (using mock data)
   useEffect(() => {
     const fetchGroups = async () => {
       const mockGroups = [
@@ -55,25 +50,20 @@ function Feed() {
     fetchGroups();
   }, []);
 
-  // Also fetch posts on mount
   useEffect(() => {
     fetchPosts();
   }, []);
 
-  // Comment functions (unchanged)
   const handleCommentClick = (postId) => {
     setShowCommentInput(postId);
   };
 
   const handleCommentSubmit = (postId, commentText) => {
-    if (!commentText.trim()) {
-      return; // Do not add empty comments
-    }
-
+    if (!commentText.trim()) return;
     const newComment = {
-      text: commentText, // The comment text
-      timestamp: new Date().toLocaleString(), // The current timestamp
-      user: "User123", // Replace with dynamic user if needed
+      text: commentText,
+      timestamp: new Date().toLocaleString(),
+      user: "User123",
     };
 
     setPosts((prevPosts) =>
@@ -83,23 +73,19 @@ function Feed() {
           : post
       )
     );
-    setShowCommentInput(null); // Hide the input field after the comment is submitted
+    setShowCommentInput(null);
   };
 
   const handleGroupClick = (groupId) => {
     console.log(`Group ${groupId} clicked`);
-    // Future implementation: fetch posts for the selected group
   };
 
-  // Apply Filters: logs the filter values and hides the filter menu.
   const applyFilters = () => {
-    console.log([dateFilter, typeFilter, posterFilter]);
+    console.log([dateFilter, posterFilter]);
     setFilterVisible(false);
   };
 
-  // Filtering logic – if no filters are set, filteredPosts equals posts.
   const filteredPosts = posts.filter((post) => {
-    // Date filter: compare local date (YYYY-MM-DD)
     if (dateFilter) {
       const postDateObj = new Date(post.created_at * 1000);
       const localYear = postDateObj.getFullYear();
@@ -108,9 +94,6 @@ function Feed() {
       const localDateStr = `${localYear}-${localMonth}-${localDay}`;
       if (localDateStr !== dateFilter) return false;
     }
-    // Filter by type if provided
-    if (typeFilter && post.type !== typeFilter) return false;
-    // Filter by poster (username)
     if (
       posterFilter &&
       !post.username.toLowerCase().includes(posterFilter.toLowerCase())
@@ -122,14 +105,9 @@ function Feed() {
   return (
     <>
       <nav className="navbar bg-body-tertiary">
-        <div
-          className="collapse"
-          id="navbarToggleExternalContent"
-          data-bs-theme="dark"
-        >
+        <div className="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
           <div className="bg-dark p-4">
             <h5 className="text-body-emphasis h4">My Groups</h5>
-            {/* Dynamically list groups */}
             <ul className="list-unstyled">
               {groups.map((group) => (
                 <li key={group.id}>
@@ -186,6 +164,7 @@ function Feed() {
           >
             +
           </button>
+
           {filterVisible && (
             <div className="position-relative mt-5">
               <div
@@ -207,20 +186,7 @@ function Feed() {
                   value={posterFilter}
                   onChange={(e) => setPosterFilter(e.target.value)}
                 />
-                <label className="form-label text-light">Type:</label>
-                <select
-                  className="form-control mb-2"
-                  value={typeFilter}
-                  onChange={(e) => setTypeFilter(e.target.value)}
-                >
-                  <option value="">Select Type</option>
-                  <option value="text">Text Entry</option>
-                  <option value="image">Image</option>
-                </select>
-                <button
-                  className="btn btn-primary w-100"
-                  onClick={applyFilters}
-                >
+                <button className="btn btn-primary w-100" onClick={applyFilters}>
                   Apply
                 </button>
               </div>
@@ -229,7 +195,6 @@ function Feed() {
         </div>
       </nav>
 
-      {/* Displaying Posts */}
       <div className="container mt-4">
         {filteredPosts.map((post) => {
           const formattedDate = new Date(post.created_at * 1000).toLocaleString(
