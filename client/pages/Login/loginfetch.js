@@ -15,13 +15,15 @@ export async function loginFetch(username, password) {
     const data = await response.json();
 
     if (!response.ok) {
+      const errorData = await response.json();
       throw new Error(data['message']);
     }
 
     // Should return { status: "OK", message: "<token>" }
     
     localStorage.setItem("token", data['message']);
-    return data;
+    //return data;
+    return response;
   } catch (error) {
     console.error('Error in loginFetch:', error);
     throw error;
