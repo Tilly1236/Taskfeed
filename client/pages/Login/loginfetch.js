@@ -15,8 +15,8 @@ export async function loginFetch(username, password) {
     const data = await response.json();
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(data['message']);
+     // const errorData = await response.json();
+     throw new Error(data.message || 'Invalid username or password');
     }
 
     // Should return { status: "OK", message: "<token>" }
