@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 import reactLogo from '/react.svg';
 import viteLogo from '/vite.svg';
 import Constant from '../../Constants.js';
@@ -10,12 +11,24 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
 
-    loginFetch(username, password).then(() => (setError("Login complete"))).catch((error) => (setError(error.message)));
+    try {
+      const response = await loginFetch(username, password);
+      if (response.ok) {
+        navigate('/feed'); 
+      } else {
+        setError('Invalid username or password'); 
+      }
+    } catch (error) {
+      setError(error.message || 'An error occurred. Please try again.');
+    }
+
+    //loginFetch(username, password).then(() => (setError("Login complete"))).catch((error) => (setError(error.message)));
   };
 
   return (
