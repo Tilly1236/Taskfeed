@@ -1,6 +1,8 @@
 import React, {useState} from "react";
 import { useEffect } from "react";
 import { feedFetch } from "./feedfetch";
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom"; 
 
 const cards = {
     width: "100%", // Make the card take full width of its container
@@ -12,8 +14,28 @@ const cards = {
 
 
 function Feed() {
+        const location = useLocation(); // Hook to access location state
 
-        
+        useEffect(() => {
+            // check if the state indicates a refresh
+            if (location.state?.refresh) {
+                fetchPosts();
+            }
+        }, [location.state]);
+
+        const fetchPosts = async () => {
+            try{
+                //simulate fetching posts from a database
+                const fetchedPosts = await feedFetch();
+                setPosts(fetchedPosts);
+            }
+            catch (error) {
+                console.error('Error fetching posts: ', error);
+            }
+            
+        };
+
+
         useEffect(() => {
 
             //Simulate fetching groups from a database
@@ -30,7 +52,7 @@ function Feed() {
             fetchGroups();
         }, []);
     
-        useEffect(() => {
+       useEffect(() => {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
@@ -42,30 +64,8 @@ function Feed() {
         
 
         
-        // Mock data for posts (replace this with data fetched from the database later)
-        const mockPosts = [
-        {
-            id: 1,
-            title: "John Doe",
-            date: "March 19, 2025",
-            content: "I accomplished nothing today.",
-            comments: [
-                {
-                    user: "Jane Smith",
-                    text: "You're doing great!",
-                    timestamp: "March 20, 2025"
-                },
-            ],
-        },
-        {
-            id: 2,
-            title: "Jane Smith",
-            date: "March 20, 2025",
-            content: "I'm feeling motivated today!",
-            comments: [],
-        },
-        ];
-
+        
+        const navigate = useNavigate();
         // State to store posts data
         const [posts, setPosts] = useState([]); 
 
@@ -149,20 +149,33 @@ function Feed() {
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
-                    <button type="button" className="btn btn-primary">+</button>
+                    <button 
+                        type="button" 
+                        className="btn btn-primary"
+                        onClick={() => navigate("/add")}>+</button>
                 </div>
             </nav> 
 
             {/*Retrieving Posts*/}
             <div className="container mt-4">
                 {/*<h1 className="mb-4 text-center">TaskFeed</h1>*/}
-                    {posts.map((post) => (
+                    {posts.map((post) => {
+                        const formattedDate = new Date(post.created_at * 1000).toLocaleString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            year: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                        });
+
+                        return(
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
                                 <div className="card-body">
                                     <h5 className="card-title">{post.username}</h5>
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
-                                        <small>{post.date}</small>
+                                        <small>{formattedDate}</small>
                                     </h6>
                                     <p className="card-text">{post.textcontent}</p>
                                     <a
@@ -202,7 +215,8 @@ function Feed() {
                                 </div>
                             </div>
                         </div>
-                    ))}
+                        );
+})}
                 </div>
         </>
     )

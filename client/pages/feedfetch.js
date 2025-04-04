@@ -11,8 +11,8 @@ export async function feedFetch() {
       },
       body: JSON.stringify({
         "groupid": 1,
-        "latest": Math.floor(Date.now() / 1000),
-        "earliest": 1
+        "latest": Math.floor(Date.now() / 1000), // Unix epoch in seconds
+        "earliest": 1 // Unix epoch in seconds
         })
     });
 

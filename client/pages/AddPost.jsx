@@ -1,41 +1,35 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { postToFeed } from './postfetch';
 
 const AddPostPage = () => {
-  const [username, setUsername] = useState('');
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const navigate = useNavigate(); //  hook for redirect
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSuccess(false);
     setError('');
 
-    try {
-      const res = await fetch('http://localhost:3000/api/feed/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify({
-          username,
-          groupid: 1, // default group for now
-          textcontent: message
-        })
-      });
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('You must be logged in to post.');
+      return;
+    }
 
-      if (res.ok) {
-        setSuccess(true);
-        setUsername('');
-        setMessage('');
-      } else {
-        const data = await res.json();
-        setError(data.message || 'Failed to post.');
-      }
+    try {
+      await postToFeed(message, token);
+      setSuccess(true);
+      setMessage('');
+
+      //  Redirect to /feed after successful post
+      await new Promise(resolve => setTimeout(resolve, 3000)); // Adds 3 second to allow server add post to database before redirecting to /feed
+      navigate('/feed', {state: {refresh: true}}); // Pass refresh state to trigger feed refresh
     } catch (err) {
-      console.error(err);
-      setError('Something went wrong.');
+      console.error('Post error:', err);
+      setError(err.message || 'Something went wrong.');
     }
   };
 
@@ -43,16 +37,6 @@ const AddPostPage = () => {
     <div className="container mt-4">
       <h2 className="mb-4">Add a New Post</h2>
       <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Username:</label>
-          <input
-            type="text"
-            className="form-control"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </div>
         <div className="mb-3">
           <label className="form-label">Message:</label>
           <textarea

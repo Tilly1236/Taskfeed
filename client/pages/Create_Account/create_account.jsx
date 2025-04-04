@@ -26,7 +26,7 @@ function CreateAccount() {
         return;
     }
     
-    signupFetch(username, password).catch((error) => (setError(error.message)));
+    signupFetch(username, password).then(() => (setError("Account created!"))).catch((error) => (setError(error.message)));
 
     //Reset the feedback for future use
     setError('');
