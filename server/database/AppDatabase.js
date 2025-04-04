@@ -42,7 +42,7 @@ class AppDatabase
 
     static get_posts(groupid, latest, earliest=0)
     {
-        return this.db.prepare("SELECT p.*, u.username FROM posts p inner join users u on p.userid = u.userid WHERE created_at<? AND created_at>=? AND groupid=? ORDER BY created_at DESC LIMIT 20 ").all(latest, earliest, groupid);
+        return this.db.prepare("SELECT p.*, u.username FROM posts p inner join users u on p.userid = u.userid WHERE created_at<? AND created_at>=? AND groupid=? ORDER BY created_at DESC LIMIT 100 ").all(latest, earliest, groupid);
     }
 
     static get last_postid()

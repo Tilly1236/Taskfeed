@@ -14,13 +14,13 @@ post.post('/', (req, res) => {
 	if(!req.body.groupid)
 	{
 		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+		return res.send({ status : 'ERROR', message: 'Missing groupid' });
 	}
 
 	if(!req.body.textcontent)
 	{
 		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Request is not complete' });
+		return res.send({ status : 'ERROR', message: 'Missing textcontent' });
 	}
 
 	if (req.body.images)
