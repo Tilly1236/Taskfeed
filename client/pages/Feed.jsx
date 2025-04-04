@@ -17,8 +17,10 @@ function Feed() {
         const location = useLocation(); // Hook to access location state
 
         useEffect(() => {
+            console.log('Location state: ', location.state);
             // check if the state indicates a refresh
             if (location.state?.refresh) {
+                console.log('Refreshing posts...');
                 fetchPosts();
             }
         }, [location.state]);
@@ -27,6 +29,7 @@ function Feed() {
             try{
                 //simulate fetching posts from a database
                 const fetchedPosts = await feedFetch();
+                console.log('Fetched posts: ', fetchedPosts);
                 setPosts(fetchedPosts);
             }
             catch (error) {
@@ -52,7 +55,7 @@ function Feed() {
             fetchGroups();
         }, []);
     
-       useEffect(() => {
+       /* useEffect(() => {
             //Simulate fetching posts from a database
             const fetchPosts = async () => {
                 //Replace this with actual API call
@@ -60,7 +63,7 @@ function Feed() {
             };
         
             fetchPosts();
-        }, [])
+        }, [])*/
         
 
         
@@ -118,11 +121,11 @@ function Feed() {
         {/*start of filter button/menu const and functions - Rachel*/}
         const [filterVisible, setFilterVisible] = useState(false); {/*State to control visibility of filter menu*/}
         const [dateFilter, setDateFilter] = useState("");
-        const [typeFiler, setTypeFilter] = useState("");
+        const [typeFilter, setTypeFilter] = useState("");
         const [posterFilter, setPosterFilter] = useState(""); {/*States for storing*/}
 
         const applyFilters = () => { {/*Function to apply filters and hide filter menu*/}
-            console.log([dateFilter,typeFiler,posterFilter]);{/*logs selected filters for debugging purposes*/}
+            console.log([dateFilter,typeFilter,posterFilter]);{/*logs selected filters for debugging purposes*/}
             setFilterVisible(false); 
         }
         {/*end of filter button/menu const and functions*/}
@@ -131,7 +134,7 @@ function Feed() {
         const filteredPosts = posts.filter(post => {
             if(dateFilter && post.date !== dateFilter) return false;
             if(typeFilter && post.type !== typeFilter) return false;
-            if(posterFilter && !post.title.toLowerCase().includes(posterFilter.toLowerCase())) return false;
+            if(posterFilter && !post.title.includes(posterFilter)) return false;
             return true;
         }); {/*End of filtering logic for posts*/}
         
@@ -159,26 +162,34 @@ function Feed() {
                         </ul>
                     </div>
                 </div>
-                <div className="container-fluid">
+                <div className="container-fluid d-flex align-items-center px-10">
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <a className="navbar-brand">TaskFeed</a>
-                    <form className="d-flex" role="search">
+
+                    <form className="d-flex me-auto" role="search">
                     <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
                     <button className="btn btn-outline-success" type="submit">Search</button>
                     </form>
+                
+
+
+                    {/*start of filter button/menu - Rachel*/}
+                    <button type="button" className="btn btn-secondary ms-0" onClick={() => setFilterVisible(!filterVisible)}>
+                        {filterVisible ? "Hide Filters" : "Show Filters"} {/*Toggle button text*/}
+                    </button>
+
                     <button 
                         type="button" 
-                        className="btn btn-primary"
+                        className="btn btn-primary ms-0"
                         onClick={() => navigate("/add")}>+</button>
                 </div> 
-                    {/*start of filter button/menu - Rachel*/}
-                    <button type="button" className="btn btn-secondary" onClick={() => setFilterVisible(!filterVisible)}>
-                        {filterVisible ? "Hide Filters" : "Show Filters"} {/*Toggle button text (not useful atm)*/}
-                    </button>
+
+
                     {filterVisible && (
-                        <div className="position-absolute end-0 me-3 p-3 border rounded mt-2 bg-dark shadow-sm" style={{width:"200px"}}>
+                        <div className="position-relative mt-5">
+                        <div className="position-absolute end-0 p-3 border rounded bg-dark shadow-sm" style={{width:"200px", zIndex:1050}}>
                             <label className="form-label">Date:</label> {/*Filter by date*/}
                             <input type="date" className="form-control mb-2" value={dateFilter} onChange={(e) => setDateFilter(e.target.value)}/>
 
@@ -186,7 +197,7 @@ function Feed() {
                             <input type="text" className="form-control mb-2" placeholder="Username" value={posterFilter} onChange={(e) => setPosterFilter(e.target.value)}/>
 
                             <label className="form-label">Type:</label> {/*Filter by data*/}
-                            <select className="form-control mb-2" value={typeFiler} onChange={(e) => setTypeFilter(e.target.value)}>
+                            <select className="form-control mb-2" value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)}>
                                 <option value="">Select Type</option>
                                 <option value="text">Text Entry</option>
                                 <option value="image">Image</option>
@@ -196,7 +207,10 @@ function Feed() {
                                 Apply
                             </button>
                         </div>
+                        </div>
                     )} {/*end of filter button/menu*/}
+
+                    
                     {/*Start of displaying filtered posts - Rachel*/}
                     <div className="container mt-4">
                         {filteredPosts.map((post) => (
@@ -212,23 +226,13 @@ function Feed() {
             {/*Retrieving Posts*/}
             <div className="container mt-4">
                 {/*<h1 className="mb-4 text-center">TaskFeed</h1>*/}
-                    {posts.map((post) => {
-                        const formattedDate = new Date(post.created_at * 1000).toLocaleString("en-US", {
-                            month: "long",
-                            day: "numeric",
-                            year: "numeric",
-                            hour: "numeric",
-                            minute: "numeric",
-                            hour12: true,
-                        });
-
-                        return(
+                    {posts.map((post) => (
                         <div className="mb-4" key={post.id}>
                             <div className="card" style={cards}>
                                 <div className="card-body">
                                     <h5 className="card-title">{post.username}</h5>
                                     <h6 className="card-subtitle mb-2 text-body-secondary">
-                                        <small>{formattedDate}</small>
+                                        <small>{post.date}</small>
                                     </h6>
                                     <p className="card-text">{post.textcontent}</p>
                                     <a
@@ -268,8 +272,7 @@ function Feed() {
                                 </div>
                             </div>
                         </div>
-                        );
-})}
+                    ))}
                 </div>
         </>
     )
