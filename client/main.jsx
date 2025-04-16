@@ -1,7 +1,8 @@
 import AddPostPage from "./pages/AddPost.jsx";
+import Home from "./pages/Home.jsx";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Sample from "./pages/Sample/Sample.jsx";
@@ -14,6 +15,7 @@ const root = document.getElementById("root");
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
+      <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/create_account" element={<CreateAccount />} />
