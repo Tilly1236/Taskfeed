@@ -6,6 +6,10 @@ const signup = express.Router();
 
 signup.post('/', (req, res) =>{
 
+	// Accepts request body tokens
+	// username - Required
+	// password - Required
+
 	if (!req.body) return res.sendStatus(400)
 	
 	if (!req.body.username)

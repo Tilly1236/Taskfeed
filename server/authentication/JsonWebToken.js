@@ -5,12 +5,20 @@ import process from 'process'
 import {Buffer} from 'node:buffer'
 import AuthError from '../errors/AuthError.js';
 
+/**
+ * Helper function to create json webtokens
+ */
 class JsonWebToken
 {
 
 	static secret = process.env.TOKENSECRET || "generictoken"
 
-
+	/**
+	 * Creates cryptographic signature with a secret
+	 * @param {*} header 
+	 * @param {*} payload 
+	 * @returns {String} signature
+	 */
 	static signature(header, payload)
 	{
 		const hmac = crypto.createHmac('sha256', JsonWebToken.secret);
@@ -32,6 +40,11 @@ class JsonWebToken
 
 	}
 
+	/**
+	 * Creates a JSON web token.
+	 * @param {*} payload - User infomation to be included with token payload
+	 * @returns {String} token
+	 */
 	static create(payload)
 	{
 		let header = JSON.stringify({ "alg": "HS256", "typ" : "JWT"});
@@ -53,6 +66,11 @@ class JsonWebToken
 		return token;
 	}
 
+	/**
+	 * Verifies the token if its created by the server
+	 * @param {*} token - Client token to be verified 
+	 * @returns JSON object with header and payload.
+	 */
 	static verify_signature(token)
 	{
 		let [header, payload, sig] = JsonWebToken.parse(token);

@@ -10,6 +10,10 @@ feed.use(authentication());
 
 feed.post('/', (req, res) => {
 	
+	// Accepts request body tokens
+	// groupid - Required
+	// latest - Required
+	// earliest - Required
 	
 	if (!req.body.groupid)
 	{

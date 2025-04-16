@@ -2,6 +2,10 @@
 import JsonWebToken from './JsonWebToken.js';
 import AuthError from '../errors/AuthError.js';
 
+/**
+ * Middleware to handle authentication using JSON webtokens
+ * @returns 
+ */
 function authentication() {
 	return function auth(req, res, next){
 		

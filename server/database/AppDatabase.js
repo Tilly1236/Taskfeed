@@ -45,6 +45,15 @@ class AppDatabase
         return this.db.prepare("SELECT p.*, u.username FROM posts p inner join users u on p.userid = u.userid WHERE created_at<? AND created_at>=? AND groupid=? ORDER BY created_at DESC LIMIT 100 ").all(latest, earliest, groupid);
     }
 
+    /**
+     * Dynamically creates a sqlite query depending params not being null
+     * @param {*} groupid Required
+     * @param {*} latest 
+     * @param {*} earliest 
+     * @param {*} authorname 
+     * @param {*} contains 
+     * @returns 
+     */
     static filtered_get_posts(groupid, latest, earliest, authorname, contains)
     {   
         let formatted_contains = "";

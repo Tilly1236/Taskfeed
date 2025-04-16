@@ -10,11 +10,12 @@ filter.use(authentication());
 
 filter.post('/', (req, res) => {
 
-
-	// Filter by
-	// Timestamp (Latest, Earliest)
-	// Author
-	// Content
+	// Accepts request body tokens
+	// groupid - Required
+	// latest
+	// earliest
+	// author
+	// contains
 	
 	if (!req.body.groupid)
 	{

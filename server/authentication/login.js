@@ -9,8 +9,13 @@ const login = express.Router();
 
 login.post('/', (req, res) => {
 
+	// Accepts request body tokens
+	// username - Required
+	// password - Required
+
 	let query
 
+	// Check if request body is empty
 	if (!req.body) return res.sendStatus(400)
 		
 	if (!req.body.username)
@@ -31,8 +36,8 @@ login.post('/', (req, res) => {
 	}
 	catch (error)
 	{
-		
-		if (error instanceof LoginError)
+
+		if (error instanceof LoginError) // Catches if password sent by client and server are not the same.
 		{
 			res.set({'Content-Type': 'application/json' });
 			res.status(401);

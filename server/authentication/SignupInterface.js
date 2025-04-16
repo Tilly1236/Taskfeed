@@ -6,12 +6,16 @@ import SignupError from "../errors/SignupError.js";
 
 import process from 'process';
 
+/**
+ * Helper class for signup endpoint
+ */
 class SignupInterface
 {   
 
     static increment = parseFloat(process.env.START_INC) || 100000000000;
     static add = parseInt(process.env.ADD) || 1234;
 
+    // Runs on class initialization 
     static
     {
         // Retrieves the last user database to continue the increment if the server restarts 
@@ -24,6 +28,12 @@ class SignupInterface
         
     }
 
+    /**
+     * Creates a new user and authication scheme 
+     * @param {*} username 
+     * @param {*} password 
+     * @throws {SignupError} If username is already being used.
+     */
     static new_user(username, password)
     {      
         if (AppDatabase.username_exists(username) == 1 )
@@ -33,7 +43,7 @@ class SignupInterface
 
         let userid = String(SignupInterface.increment);
 
-        SignupInterface.increment += SignupInterface.add;;
+        SignupInterface.increment += SignupInterface.add;
         let hash = AuthShared.hash(password);
 
 
