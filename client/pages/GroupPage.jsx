@@ -1,4 +1,4 @@
-// src/GroupsPage.jsx
+// src/GroupsPage
 import React, { useState, useEffect } from "react";
 import Constants from "./constants";
 
