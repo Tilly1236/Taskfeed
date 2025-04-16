@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Sample from "./pages/Sample/Sample.jsx";
-import Feed from "./pages/Feed_NEW.jsx";
+import Feed from "./pages/Feed.jsx";
 import Login from "./pages/Login/Login.jsx";
 import CreateAccount from "./pages/Create_Account/create_account.jsx";
 
