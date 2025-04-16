@@ -1,7 +1,7 @@
 import express from 'express';
 
 import authentication from '../authentication/authentication.js';
-import FeedInterface from './FeedInterface.js';
+import AppDatabase from '../database/AppDatabase.js';
 
 const feed = express.Router();
 
@@ -31,7 +31,7 @@ feed.post('/', (req, res) => {
 	let listFeed
 
 	try {
-		listFeed = FeedInterface.getfeed(req.body.groupid, req.body.latest, req.body.earliest);
+		listFeed = AppDatabase.get_posts(req.body.groupid, req.body.latest, req.body.earliest);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send("Internal Server Error");

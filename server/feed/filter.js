@@ -1,7 +1,7 @@
 import express from 'express';
 
 import authentication from '../authentication/authentication.js';
-import FeedInterface from './FeedInterface.js';
+import AppDatabase from '../database/AppDatabase.js';
 
 const filter = express.Router();
 
@@ -27,7 +27,7 @@ filter.post('/', (req, res) => {
 	let listFeed
 
 	try {
-		listFeed = FeedInterface.filter(req.body.groupid, req.body.latest, req.body.earliest, req.body.author, req.body.contains);
+		listFeed = AppDatabase.filtered_get_posts(req.body.groupid, req.body.latest, req.body.earliest, req.body.author, req.body.contains);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send("Internal Server Error");
