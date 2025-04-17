@@ -1,12 +1,16 @@
 .Logo{
     position: absolute;
     top: 1em;
-    right: 10em;
-    border: 3px solid black;
-    padding: 0em 8em 0em 8em;
-    color: blue;
-    
-    
+    left: 1em;
+    width: 7em;
+    height: 7em;
+   padding: 0em 5em 0em 5em;
+    background-image: url('../../assets/images/Logo_Taskfeed.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat; 
+    border: 2px solid #000000;
+    z-index: 1; 
 }
 
 .words{
@@ -14,16 +18,26 @@
     text-align: center;
     margin-bottom: 1em;
     font-size: 1.5em;
+    color: #F4C542;
 }
 
 form {
-    border: 2px solid black; 
-    padding: 2em; 
+    border: 2px solid #F4C542;
+    padding: 3em; 
     width: 300px; 
     margin: 0 auto; 
-    background-color: #f9f9f9; 
+    background-color: #ECF0F1; 
     border-radius: 8px; 
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); 
+}
+form input {
+    display: block;
+    width: 100%; 
+    padding: 0.5em; /* Increased padding for taller input fields */
+    margin-top: 1em; /* Adds spacing between input fields */
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    font-size: 1em; 
 }
 
 #signIn {
@@ -31,7 +45,7 @@ form {
     width: 100%; 
     padding: 0.5em; 
     margin-top: 1em; 
-    background-color: #007bff;
+    background-color: #2C3E50;
     color: white; 
     border: none; 
     border-radius: 4px; 
@@ -40,9 +54,37 @@ form {
 }
 
 #signIn:hover {
-    background-color: #0056b3; 
+    background-color: #F4C542; 
+    color: #2C3E50;
 }
 
 body{
-    background-color: white;
+    background: linear-gradient(to bottom, #2C3E50, #FAD6A5);
+    color: #2C3E50;
+    position: relative;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+}
+body::before {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: -5%;
+    width: 200px;
+    height: 200px;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    border-radius: 50%; /* Creates a circle */
+    z-index: 0; /* Places it behind other content */
+}
+
+body::after {
+    content: '';
+    position: absolute;
+    bottom: 15%;
+    right: -10%;
+    width: 300px;
+    height: 300px;
+    background-color: rgba(0, 0, 0, 0.3); /* Semi-transparent black */
+    clip-path: polygon(50% 0%, 100% 100%, 0% 100%); /* Creates a triangle */
+    z-index: 0; /* Places it behind other content */
 }
