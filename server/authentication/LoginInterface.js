@@ -4,9 +4,17 @@ import AuthShared from './AuthShared.js';
 
 import LoginError from "../errors/LoginError.js";
 
+/**
+ * Helper class for login endpoint
+ */
 class LoginInterface
 {
-
+	/**
+	 * Function to verify if username and password exits within database and verify passwords match
+	 * @param {*} username 
+	 * @param {*} password 
+	 * @returns 
+	 */
 	static login(username, password)
 	{
 

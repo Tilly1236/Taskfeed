@@ -33,13 +33,10 @@ function Login() {
 
   return (
     <>
-      <div className="Logo">
-        <h2>Taskfeed</h2>
-      </div>
+      <div className="Logo"></div>
 
       <div className="words">
-        <h1>Sign In</h1>
-        <h3>or create an account</h3>
+        <h2>Sign In</h2>
       </div>
 
       <form onSubmit={handleLogin}>

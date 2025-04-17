@@ -19,25 +19,11 @@ process.on('SIGINT', () => {
 const app = express()
 const port = process.env.PORT || 3000
 
-app.use(express.json());
+app.use(express.json()); // Middleware to parse JSON request bodys
 
-app.use(cors())
+app.use(cors()); // Fixes issues with CORS-policies
 
-// app.use(function (req, res, next) {
-
-//   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
-
-//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-
-//   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-
-
-//   res.setHeader('Access-Control-Allow-Credentials', true);
-
-//   next();
-// });
-
-// Catching json syntax error from the json middleware
+// Error handler for middleware
 app.use((err, req, res, next) => {
 	console.error(err.stack)
 
@@ -48,16 +34,17 @@ app.use((err, req, res, next) => {
 	}
 
 	next(err);
-  })
+  }) 
 
-app.use('/api', api);
-app.use('/auth', auth);
+app.use('/api', api); // Uses the router object defined by the token which handles requests at "/api"
+app.use('/auth', auth); // Uses the router object defined by the token which handles requests at "/auth"
+// Routers objects allow to define endpoints in modular fashion. 
 
 app.get('/', (req, res) => {
   res.send("Hello World")
-})
+}) // Testing page
 
 app.listen(port, () => {
     console.log(`Taskfeed Server: listening on port ${port}`)
-  })
+  }) // Make the server start listen to requests from clients
   
