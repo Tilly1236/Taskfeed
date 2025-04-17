@@ -7,7 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import Sample from "./pages/Sample/Sample.jsx";
 import Feed from "./pages/Feed.jsx";
 import Login from "./pages/Login/Login.jsx";
-import CreateAccount from "./pages/Create_Account/create_account.jsx";
+import CreateAccount from "./pages/Login/create_account.jsx";
 
 const root = document.getElementById("root");
 
