@@ -9,6 +9,11 @@ post.use(authentication());
 
 post.post('/', (req, res) => {
 
+	// Accepts request body tokens
+	// groupid - Required
+	// textcontent - Required
+	// images
+
 	let hasImages = false;
 
 	if(!req.body.groupid)

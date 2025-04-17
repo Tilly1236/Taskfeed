@@ -45,6 +45,46 @@ class AppDatabase
         return this.db.prepare("SELECT p.*, u.username FROM posts p inner join users u on p.userid = u.userid WHERE created_at<? AND created_at>=? AND groupid=? ORDER BY created_at DESC LIMIT 100 ").all(latest, earliest, groupid);
     }
 
+    /**
+     * Dynamically creates a sqlite query depending params not being null
+     * @param {*} groupid Required
+     * @param {*} latest 
+     * @param {*} earliest 
+     * @param {*} authorname 
+     * @param {*} contains 
+     * @returns 
+     */
+    static filtered_get_posts(groupid, latest, earliest, authorname, contains)
+    {   
+        let formatted_contains = "";
+        let formatted_authorname = "";
+        let string_cap = "SELECT p.*, u.username FROM posts p inner join users u on p.userid = u.userid WHERE groupid=@groupid"
+
+        if(latest)
+        {
+            string_cap += " AND created_at<@latest";
+        }
+        if(earliest)
+        {
+            string_cap += " AND created_at>=@earliest";
+        }
+        if(authorname)
+        {
+            formatted_authorname = `%${authorname}%`
+            string_cap += " AND u.username LIKE @authorname";
+        }
+        if(contains)
+        {
+            formatted_contains = `%${contains}%`
+            string_cap += " AND textcontent LIKE @contains";
+        }
+
+        string_cap += " ORDER BY created_at DESC LIMIT 100";
+
+        return this.db.prepare(string_cap).all({groupid:groupid, latest:latest, earliest:earliest, authorname:formatted_authorname, contains:formatted_contains});
+
+    }
+
     static get last_postid()
     {
         return this.db.prepare("SELECT MAX(postid) FROM posts LIMIT 1;").get()['MAX(postid)']
