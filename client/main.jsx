@@ -11,7 +11,6 @@ import Login from "./pages/Login/Login.jsx";
 import CreateAccount from "./pages/Create_Account/create_account.jsx";
 import About from "./pages/About.jsx";
 
-
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
