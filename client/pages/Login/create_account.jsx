@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link } from "react-router";
 import { signupFetch } from './signupfetch';
+import LoginForm from './LoginForm.jsx';
 
 function CreateAccount() {
+  const [error, setError] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -21,7 +22,7 @@ function CreateAccount() {
     } else if(!confirmPassword){
         setError("Please confirm your password");
         return;
-    } else if(password != confirmPassword){
+    } else if(password !== confirmPassword){
         setError("Passwords do not match");
         return;
     }
@@ -37,42 +38,19 @@ function CreateAccount() {
       <div className="create-account-container">
       <div className="Logo"></div>
       <h1>Create Account</h1>
-      <form onSubmit={handleSubmit} className="create-account-form">
 
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </div>
-
-        {error && <p className="error-message">{error}</p>}
-
-        <button type="submit">Create Account</button>
-      </form>
+      <LoginForm
+        submitFunction={handleSubmit}
+        submitText="Create Account"
+        confirm={true}
+        error={error}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        confirmPassword={confirmPassword}
+        setConfirmPassword={setConfirmPassword}
+      />
     
       <p>Already have an account? </p>
       <Link to="/login">Sign in</Link>
