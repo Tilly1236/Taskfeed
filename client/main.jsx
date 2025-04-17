@@ -9,7 +9,7 @@ import Sample from "./pages/Sample/Sample.jsx";
 import Feed from "./pages/Feed.jsx";
 import Login from "./pages/Login/Login.jsx";
 import CreateAccount from "./pages/Create_Account/create_account.jsx";
-import About from "./pages/About.jsx";                
+import About from "./pages/About.jsx";
 
 const root = document.getElementById("root");
 
@@ -17,7 +17,7 @@ ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />       
+      <Route path="/about" element={<About />} />
       <Route path="/login" element={<Login />} />
       <Route path="/feed" element={<Feed />} />
       <Route path="/create_account" element={<CreateAccount />} />
