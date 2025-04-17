@@ -1,0 +1,110 @@
+/* About.css – */
+.about-wrapper {
+    min-height: 100vh;
+    padding: 4rem 2rem;
+    background: #0f172a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #e2e8f0;
+  }
+  
+  .about-title {
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
+    color: #38bdf8;
+    font-weight: 700;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+    animation: slideUp 0.6s ease forwards;
+  }
+  
+  .taskfeed-link {
+    display: inline-block;
+    background-color: #38bdf8;
+    color: #0f172a;
+    padding: 0.1rem 0.6rem;
+    border-radius: 8px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  .taskfeed-link:hover {
+    background-color: #0ea5e9;
+    transform: scale(1.05);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+  }
+  
+  /* ----- Card Grid Layout ----- */
+  .card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+  
+  .member-card {
+    flex: 0 0 220px;
+    background: #1e293b;
+    border: 2px solid #38bdf8;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.45);
+    transform: translateY(20px);
+    opacity: 0;
+    animation: slideFadeIn 0.5s ease forwards;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  
+  .member-card:nth-child(1) { animation-delay: 0.1s; }
+  .member-card:nth-child(2) { animation-delay: 0.2s; }
+  .member-card:nth-child(3) { animation-delay: 0.3s; }
+  .member-card:nth-child(4) { animation-delay: 0.4s; }
+  .member-card:nth-child(5) { animation-delay: 0.5s; }
+  .member-card:nth-child(6) { animation-delay: 0.6s; }
+  .member-card:nth-child(7) { animation-delay: 0.7s; }
+  
+  .member-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    color: #f1f5f9;
+  }
+  
+  .member-card p {
+    margin: 0;
+    color: #cbd5e1;
+  }
+  
+  .member-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* ---------- Animations ---------- */
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes slideFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(25px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
