@@ -62,7 +62,6 @@ body{
     background: linear-gradient(to bottom, #2C3E50, #FAD6A5);
     color: #2C3E50;
     position: relative;
-    overflow: hidden;
     font-family: Arial, sans-serif;
 }
 body::before {
