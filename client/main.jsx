@@ -9,7 +9,7 @@ import Sample from "./pages/Sample/Sample.jsx";
 import Feed from "./pages/Feed.jsx";
 import Login from "./pages/Login/Login.jsx";
 import CreateAccount from "./pages/Create_Account/create_account.jsx";
-import About from "./pages/About.jsx";                  
+import About from "./pages/About.jsx";                
 
 const root = document.getElementById("root");
 
