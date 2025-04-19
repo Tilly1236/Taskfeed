@@ -159,6 +159,11 @@ class AppDatabase
         return this.db.prepare("SELECT exists(SELECT 1 FROM groups WHERE groupid = ?) AS row_exists;").get(groupid)['row_exists'];
     }
 
+    static groupname_exists(groupname)
+    {
+        return this.db.prepare("SELECT exists(SELECT 1 FROM groups WHERE groupname = ?) AS row_exists;").get(groupname)['row_exists'];
+    }
+
     static is_member_in_group(memberid, groupid)
     {
         return this.db.prepare("SELECT exists(SELECT 1 FROM groupmembers WHERE memberid = ? AND groupid = ?) AS row_exists;").get(memberid, groupid)['row_exists'];
