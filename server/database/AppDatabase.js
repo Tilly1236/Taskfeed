@@ -24,7 +24,7 @@ class AppDatabase
 
             this.db.prepare("CREATE TABLE IF NOT EXISTS groups (groupid INTEGER PRIMARY KEY, groupname TEXT)").run();
 
-            this.db.prepare("CREATE TABLE IF NOT EXITS groupmembers (memberid INTEGER, groupid INTEGER, isAdmin INTEGER, isLeader INTEGER, FOREIGN KEY(userid) REFERENCES users(userid), FOREIGN KEY(groupid) REFERENCES groups(groupid))").run();
+            this.db.prepare("CREATE TABLE IF NOT EXISTS groupmembers (memberid INTEGER, groupid INTEGER, isAdmin INTEGER, isLeader INTEGER, FOREIGN KEY(memberid) REFERENCES users(userid), FOREIGN KEY(groupid) REFERENCES groups(groupid))").run();
         }
     }
 
