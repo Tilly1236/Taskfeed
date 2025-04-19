@@ -110,7 +110,7 @@ class AppDatabase
 
     static get last_commentid()
     {
-        return this.db.prepare("SELECT MAX(commentid) FROM comments LIMIT 1;").get()['MAX(postid)']
+        return this.db.prepare("SELECT MAX(commentid) FROM comments LIMIT 1;").get()['MAX(commentid)']
     }
 
 }
