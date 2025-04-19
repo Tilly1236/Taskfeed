@@ -30,7 +30,7 @@ const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment 
                 handleCommentClick(post.postid);
               }}
             >
-              Comment {post.commentcount}
+              Comments <b>{post.commentcount}</b>
             </a>
             {showCommentInput && (
               <Comment postId={post.postid} onSubmitComment={onSubmitComment} />
