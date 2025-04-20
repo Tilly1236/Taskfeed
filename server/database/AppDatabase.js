@@ -141,7 +141,7 @@ class AppDatabase
 
     static set_member_admin(isAdmin, memberid, groupid)
     {
-        this.db.prepare("UPDATE groupmembers SET isAdmin = ? WHERE member = ? AND groupid = ?").run(isAdmin, memberid, groupid);
+        this.db.prepare("UPDATE groupmembers SET isAdmin = ? WHERE memberid = ? AND groupid = ?").run(isAdmin, memberid, groupid);
     }
 
     static remove_member(memberid, groupid)
