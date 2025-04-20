@@ -2,6 +2,7 @@ import {Router} from 'express';
 import groupcreate from './groupcreate.js';
 import memberadd from './memberadd.js';
 import memberleave from './memberleave.js';
+import memberremove from './memberemove.js';
 
 const group = Router();
 
@@ -14,6 +15,7 @@ group.use("/add_member", memberadd);
 group.use("/leave", memberleave);
 
 // Remove Member (Admin/Leader Check)
+group.use("/remove_member", memberremove);
 
 // List Members
 

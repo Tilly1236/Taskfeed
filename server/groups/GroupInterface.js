@@ -98,6 +98,52 @@ class GroupInterface
 		AppDatabase.remove_member(userid, groupid);
 	}
 
+	static remove_member(senderid, memberid, groupid)
+	{
+		if (AppDatabase.group_exists(groupid) != 1)
+		{
+			throw new GroupError("Group does not exist");
+		}
+
+		if (AppDatabase.user_exists(memberid) != 1)
+		{
+			throw new GroupError("Member to be added does not exist");
+		}
+
+		if (AppDatabase.is_member_in_group(senderid, groupid) != 1)
+		{
+			throw new GroupError("User is not in this group")
+		}
+
+		if (AppDatabase.is_member_in_group(memberid, groupid) != 1)
+		{
+			throw new GroupError("Member is not in this group")
+		}
+
+		let sender_permissions = AppDatabase.get_permissions(senderid, groupid);
+
+		let member_permissions = AppDatabase.get_permissions(memberid, groupid);
+
+		if (!(sender_permissions["isAdmin"] == 1 || sender_permissions["isLeader"] == 1))
+		{
+			throw new GroupError("User does not have permission to remove members to this group");
+		}
+
+		if (senderid == memberid)
+		{
+			throw new GroupError("Cannot remove yourself to a group");
+		}
+
+		
+
+		if (sender_permissions["isAdmin"] == member_permissions["isAdmin"] && sender_permissions["isLeader"] != 1)
+		{
+			throw new GroupError("User cannot remove this member");
+		}
+
+		AppDatabase.remove_member(memberid, groupid);
+	}
+
  
 }
 
