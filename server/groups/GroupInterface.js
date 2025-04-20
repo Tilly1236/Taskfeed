@@ -20,7 +20,7 @@ class GroupInterface
         let last = AppDatabase.last_groupid
         if (last)
         {
-            GroupInterface.increment = parseInt(last) + GroupInterface.add;
+            GroupInterface.group_increment = parseInt(last) + GroupInterface.add;
         }
 
         
@@ -34,6 +34,7 @@ class GroupInterface
 		}
 
 		AppDatabase.create_group(GroupInterface.group_increment, leaderid, groupname)
+		GroupInterface.group_increment += GroupInterface.add;
 	}
 
 	static add_member(senderid, membername, groupid, isAdmin)
