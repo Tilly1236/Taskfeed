@@ -154,6 +154,11 @@ class AppDatabase
         return this.db.prepare("SELECT m.*, g.groupname FROM groupmembers m inner join groups g on m.groupid = g.groupid WHERE memberid=? ORDER BY g.groupname DESC").run(memberid)
     }
 
+    static list_members(groupid)
+    {
+        return this.db.prepare("SELECT m.*, u.username FROM groupmembers m inner join users u on u.userid = m.memberid WHERE groupid=? ORDER BY isLeader DESC, isAdmin DESC, u.username ASC;").all(groupid)
+    }
+
     static group_exists(groupid)
     {
         return this.db.prepare("SELECT exists(SELECT 1 FROM groups WHERE groupid = ?) AS row_exists;").get(groupid)['row_exists'];
