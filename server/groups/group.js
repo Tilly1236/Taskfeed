@@ -3,6 +3,7 @@ import groupcreate from './groupcreate.js';
 import memberadd from './memberadd.js';
 import memberleave from './memberleave.js';
 import memberremove from './memberemove.js';
+import memberlist from './memberlist.js';
 
 const group = Router();
 
@@ -18,6 +19,7 @@ group.use("/leave", memberleave);
 group.use("/remove_member", memberremove);
 
 // List Members
+group.use("/list_members", memberlist);
 
 // Change Admin Powers (Leader Check)
 

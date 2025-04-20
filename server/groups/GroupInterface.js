@@ -144,6 +144,22 @@ class GroupInterface
 		AppDatabase.remove_member(memberid, groupid);
 	}
 
+	static list_member(senderid, groupid)
+	{
+
+		if (AppDatabase.group_exists(groupid) != 1)
+		{
+			throw new GroupError("Group does not exist")
+		}
+
+		if (AppDatabase.is_member_in_group(senderid, groupid) != 1)
+		{
+			throw new GroupError("User is not in this group")
+		}
+
+		return AppDatabase.list_members(groupid)
+	}
+
  
 }
 
