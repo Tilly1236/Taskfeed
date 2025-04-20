@@ -36,6 +36,41 @@ class GroupInterface
 		AppDatabase.create_group(GroupInterface.group_increment, leaderid, groupname)
 	}
 
+	static add_member(senderid, membername, groupid, isAdmin)
+	{
+
+		if (AppDatabase.group_exists(groupid) != 1)
+		{
+			throw new GroupError("Group does not exist");
+		}
+
+		if (AppDatabase.username_exists(membername) != 1)
+		{
+			throw new GroupError("Member to be added does not exist");
+		}
+
+		let permissions = AppDatabase.get_permissions(senderid, groupid);
+
+		if (permissions["isAdmin"] != 1 || permissions["isLeader"] != 1)
+		{
+			throw new GroupError("User does not have permission to add members to this group");
+		}
+
+		let memberid = AppDatabase.get_userid(membername);
+
+		if (senderid == memberid)
+		{
+			throw new GroupError("Cannot add yourself to a group")
+		}
+
+		if (AppDatabase.is_member_in_group(memberid, groupid) == 1)
+		{
+			throw new GroupError("Member already is in this group")
+		}
+
+		AppDatabase.add_member(memberid, groupid, Number(isAdmin));
+	}
+
     
 
  
