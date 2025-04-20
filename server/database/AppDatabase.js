@@ -151,7 +151,7 @@ class AppDatabase
 
     static list_groups(memberid)
     {   
-        return this.db.prepare("SELECT m.*, g.groupname FROM groupmembers m inner join groups g on m.groupid = g.groupid WHERE memberid=? ORDER BY g.groupname DESC").run(memberid)
+        return this.db.prepare("SELECT g.*, m.isLeader, m.isAdmin FROM groupmembers m inner join groups g on m.groupid = g.groupid WHERE memberid=? ORDER BY g.groupname DESC").all(memberid)
     }
 
     static list_members(groupid)
