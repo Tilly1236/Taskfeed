@@ -49,6 +49,11 @@ class GroupInterface
 			throw new GroupError("Member to be added does not exist");
 		}
 
+		if (AppDatabase.is_member_in_group(senderid, groupid) != 1)
+		{
+			throw new GroupError("User is in not in this group")
+		}
+
 		let permissions = AppDatabase.get_permissions(senderid, groupid);
 
 		if (permissions["isAdmin"] != 1 || permissions["isLeader"] != 1)
