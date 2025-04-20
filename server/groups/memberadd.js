@@ -31,8 +31,7 @@ memberadd.post('/', (req, res) => {
 	}
 	
 
-
-	if(!req.body.isAdmin)
+	if(req.body.isAdmin)
 	{
 		isAdmin = true;
 	}
