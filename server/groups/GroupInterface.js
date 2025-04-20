@@ -76,7 +76,27 @@ class GroupInterface
 		AppDatabase.add_member(memberid, groupid, Number(isAdmin));
 	}
 
-    
+    static leave(userid, groupid)
+	{
+		if (AppDatabase.group_exists(groupid) != 1)
+		{
+			throw new GroupError("Group does not exist");
+		}
+
+		if (AppDatabase.is_member_in_group(userid, groupid) != 1)
+		{
+			throw new GroupError("Cannot leave a group not member of")
+		}
+
+		let permissions = AppDatabase.get_permissions(userid, groupid);
+
+		if (permissions["isLeader"] == 1)
+		{
+			throw new GroupError("Group leaders cannot leave group");
+		}
+
+		AppDatabase.remove_member(userid, groupid);
+	}
 
  
 }
