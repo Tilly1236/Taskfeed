@@ -4,6 +4,7 @@ import memberadd from './memberadd.js';
 import memberleave from './memberleave.js';
 import memberremove from './memberemove.js';
 import memberlist from './memberlist.js';
+import grouplist from './grouplist.js';
 
 const group = Router();
 
@@ -21,9 +22,12 @@ group.use("/remove_member", memberremove);
 // List Members
 group.use("/list_members", memberlist);
 
+// List of Groups
+group.use("/list_groups", grouplist);
+
 // Change Admin Powers (Leader Check)
 
-// List of Groups
+
 
 
 export default group;

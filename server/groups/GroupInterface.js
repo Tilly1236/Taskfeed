@@ -161,6 +161,10 @@ class GroupInterface
 		return AppDatabase.list_members(groupid)
 	}
 
+	static list_groups(userid)
+	{
+		return AppDatabase.list_groups(userid)
+	}
  
 }
 
