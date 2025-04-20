@@ -5,6 +5,7 @@ import memberleave from './memberleave.js';
 import memberremove from './memberemove.js';
 import memberlist from './memberlist.js';
 import grouplist from './grouplist.js';
+import memberpermissions from './memberpermissions.js';
 
 const group = Router();
 
@@ -26,7 +27,7 @@ group.use("/list_members", memberlist);
 group.use("/list_groups", grouplist);
 
 // Change Admin Powers (Leader Check)
-
+group.use("/permissions_member", memberpermissions);
 
 
 

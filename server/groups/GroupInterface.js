@@ -165,6 +165,43 @@ class GroupInterface
 	{
 		return AppDatabase.list_groups(userid)
 	}
+
+	static permissions_member(senderid, memberid, groupid, isAdmin)
+	{
+		if (AppDatabase.group_exists(groupid) != 1)
+		{
+			throw new GroupError("Group does not exist");
+		}
+
+		if (AppDatabase.user_exists(memberid) != 1)
+		{
+			throw new GroupError("Member does not exist");
+		}
+
+		if (AppDatabase.is_member_in_group(senderid, groupid) != 1)
+		{
+			throw new GroupError("User is not in this group")
+		}
+
+		if (AppDatabase.is_member_in_group(memberid, groupid) != 1)
+		{
+			throw new GroupError("Member is not in this group")
+		}
+
+		let sender_permissions = AppDatabase.get_permissions(senderid, groupid);
+
+		if (sender_permissions["isLeader"] != 1)
+		{
+			throw new GroupError("User does not have permission to change members permissions");
+		}
+
+		if (senderid == memberid)
+		{
+			throw new GroupError("Cannot your own permissions");
+		}
+
+		AppDatabase.set_member_admin(isAdmin, memberid, groupid);
+	}
  
 }
 
