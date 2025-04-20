@@ -169,6 +169,11 @@ class AppDatabase
         return this.db.prepare("SELECT exists(SELECT 1 FROM groupmembers WHERE memberid = ? AND groupid = ?) AS row_exists;").get(memberid, groupid)['row_exists'];
     }
 
+    static get_permissions(memberid, groupid)
+    {
+        return this.db.prepare("SELECT isAdmin, isLeader FROM groupmembers WHERE memberid= ? AND groupid = ?").get(memberid,groupid);
+    }
+
     static get last_groupid()
     {
         return this.db.prepare("SELECT MAX(groupid) FROM groups LIMIT 1;").get()['MAX(groupid)']
