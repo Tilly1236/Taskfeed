@@ -56,7 +56,7 @@ class GroupInterface
 
 		let permissions = AppDatabase.get_permissions(senderid, groupid);
 
-		if (permissions["isAdmin"] != 1 || permissions["isLeader"] != 1)
+		if (!(permissions["isAdmin"] == 1 || permissions["isLeader"] == 1))
 		{
 			throw new GroupError("User does not have permission to add members to this group");
 		}
