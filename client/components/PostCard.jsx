@@ -1,5 +1,6 @@
 import React from "react";
 import Comment from "./Comment";
+import { Link } from "react-router-dom";
 
 const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment }) => {
   //console.log("Post data: ", post)  
@@ -22,29 +23,9 @@ const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment 
               <small>{formattedDate}</small>
             </h6>
             <p className="card-text">{post.textcontent}</p>
-            <a
-              href="#"
-              className="card-link"
-              onClick={(e) => {
-                e.preventDefault();
-                handleCommentClick(post.postid);
-              }}
-            >
-              Comment
-            </a>
-            {showCommentInput && (
-              <Comment postId={post.postid} onSubmitComment={onSubmitComment} />
-            )}
-
-            <ul className="mt-3">
-              {(post.comments || []).map((comment, index) => (
-                <li key={index}>
-                    <strong>{comment.user}</strong>: {comment.text}
-                    <br />
-                    <small className="text-muted">{comment.timestamp}</small>
-                </li>
-              ))}
-            </ul>
+            <Link to={`/post/${post.postid}`} className="card-link">
+              Comments <b>{post.commentcount}</b>
+            </Link>
           </div>
         </div>
       </div> 
