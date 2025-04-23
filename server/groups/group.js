@@ -27,7 +27,7 @@ group.use("/list_members", memberlist);
 group.use("/list_groups", grouplist);
 
 // Change Admin Powers (Leader Check)
-group.use("/permissions_member", memberpermissions);
+group.use("/change_permissions", memberpermissions);
 
 
 
