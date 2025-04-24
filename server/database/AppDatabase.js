@@ -23,7 +23,7 @@ class AppDatabase
         this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid INTEGER PRIMARY KEY, username TEXT UNIQUE) ").run();
 
         // posts
-        this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid INTEGER PRIMARY KEY, userid INTEGER, groupid INTEGER, created_at INTEGER, textcontent TEXT, commentcount INTEGER, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid))").run();
+        this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid INTEGER PRIMARY KEY, userid INTEGER, groupid INTEGER, created_at INTEGER, textcontent TEXT, commentcount INTEGER, tag TEXT, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid))").run();
 
         this.db.prepare("CREATE TABLE IF NOT EXISTS comments (commentid INTEGER PRIMARY KEY, parentid INTEGER, userid INTEGER, created_at INTEGER, textcontent TEXT, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid), FOREIGN KEY(parentid) REFERENCES posts(postid))").run();
 
@@ -65,12 +65,17 @@ class AppDatabase
 
     static add_post(postid, userid, groupid, textcontent, hasimages)
     {
-        this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, 0, ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
+        this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, 0, '', ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
     }
 
     static add_post_time(postid, userid, groupid, textcontent,time, hasimages)
     {
-        this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, ?, ?, 0, ?)").run(postid, userid, groupid, time, textcontent,  Number(hasimages));
+        this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, ?, ?, 0, '', ?)").run(postid, userid, groupid, time, textcontent,  Number(hasimages));
+    }
+
+    static change_tag(new_tag,postid)
+    {
+        this.db.prepare("UPDATE posts SET tag = ? WHERE postid = ?").run(new_tag,postid);
     }
 
     static get_posts(groupid, latest, earliest=0)
