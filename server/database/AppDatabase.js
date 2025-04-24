@@ -19,6 +19,12 @@ class AppDatabase
             this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid INTEGER PRIMARY KEY, userid INTEGER, groupid INTEGER, created_at INTEGER, textcontent TEXT, commentcount INTEGER, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid))").run();
 
             this.db.prepare("CREATE TABLE IF NOT EXISTS comments (commentid INTEGER PRIMARY KEY, parentid INTEGER, userid INTEGER, created_at INTEGER, textcontent TEXT, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid), FOREIGN KEY(parentid) REFERENCES posts(postid))").run();
+
+            // group system
+
+            this.db.prepare("CREATE TABLE IF NOT EXISTS groups (groupid INTEGER PRIMARY KEY, groupname TEXT)").run();
+
+            this.db.prepare("CREATE TABLE IF NOT EXISTS groupmembers (memberid INTEGER, groupid INTEGER, isAdmin INTEGER, isLeader INTEGER, FOREIGN KEY(memberid) REFERENCES users(userid), FOREIGN KEY(groupid) REFERENCES groups(groupid))").run();
         }
     }
 
@@ -35,6 +41,11 @@ class AppDatabase
     static get_userid(username)
     {
         return this.db.prepare("SELECT userid FROM users WHERE username = ?").get(username)['userid'];
+    }
+
+    static user_exists(userid)
+    {
+        return this.db.prepare("SELECT exists(SELECT 1 FROM users WHERE userid = ?) AS row_exists;").get(userid)['row_exists'];
     }
 
     static add_post(postid, userid, groupid, textcontent, hasimages)
@@ -113,6 +124,68 @@ class AppDatabase
         return this.db.prepare("SELECT MAX(commentid) FROM comments LIMIT 1;").get()['MAX(commentid)']
     }
 
+    // this.db.prepare("CREATE TABLE IF NOT EXISTS groups (groupid INTEGER PRIMARY KEY, leaderid INTEGER, groupname TEXT, FOREIGN KEY(leaderid) REFERENCES users(userid))").run();
+
+    // this.db.prepare("CREATE TABLE IF NOT EXITS groupmembers (memberid INTEGER, groupid INTEGER, isAdmin INTEGER, FOREIGN KEY(userid) REFERENCES users(userid), FOREIGN KEY(groupid) REFERENCES groups(groupid))").run();
+
+    static create_group(groupid, leaderid, groupname)
+    {
+        this.db.prepare("INSERT INTO groups VALUES (?, ?)").run(groupid, groupname);
+        this.db.prepare("INSERT INTO groupmembers VALUES (?, ?, 1, 1)").run(leaderid, groupid);
+    }
+
+    static add_member(memberid, groupid, isAdmin)
+    {
+        this.db.prepare("INSERT INTO groupmembers VALUES (?, ?, ?, 0)").run(memberid, groupid, isAdmin);
+    }
+
+    static set_member_admin(isAdmin, memberid, groupid)
+    {
+        this.db.prepare("UPDATE groupmembers SET isAdmin = ? WHERE memberid = ? AND groupid = ?").run(isAdmin, memberid, groupid);
+    }
+
+    static remove_member(memberid, groupid)
+    {
+        this.db.prepare("DELETE FROM groupmembers WHERE memberid = ? AND groupid = ?").run(memberid, groupid);
+    }
+
+    static list_groups(memberid)
+    {   
+        return this.db.prepare("SELECT g.*, m.isLeader, m.isAdmin FROM groupmembers m inner join groups g on m.groupid = g.groupid WHERE memberid=? ORDER BY g.groupname DESC").all(memberid)
+    }
+
+    static list_members(groupid)
+    {
+        return this.db.prepare("SELECT m.*, u.username FROM groupmembers m inner join users u on u.userid = m.memberid WHERE groupid=? ORDER BY isLeader DESC, isAdmin DESC, u.username ASC;").all(groupid)
+    }
+
+    static group_exists(groupid)
+    {
+        return this.db.prepare("SELECT exists(SELECT 1 FROM groups WHERE groupid = ?) AS row_exists;").get(groupid)['row_exists'];
+    }
+
+    static groupname_exists(groupname)
+    {
+        return this.db.prepare("SELECT exists(SELECT 1 FROM groups WHERE groupname = ?) AS row_exists;").get(groupname)['row_exists'];
+    }
+
+    static is_member_in_group(memberid, groupid)
+    {
+        return this.db.prepare("SELECT exists(SELECT 1 FROM groupmembers WHERE memberid = ? AND groupid = ?) AS row_exists;").get(memberid, groupid)['row_exists'];
+    }
+
+    static get_permissions(memberid, groupid)
+    {
+        return this.db.prepare("SELECT isAdmin, isLeader FROM groupmembers WHERE memberid= ? AND groupid = ?").get(memberid,groupid);
+    }
+
+    static get last_groupid()
+    {
+        return this.db.prepare("SELECT MAX(groupid) FROM groups LIMIT 1;").get()['MAX(groupid)']
+    }
+
+
 }
+
 
 export default AppDatabase;
