@@ -1,0 +1,23 @@
+.card {
+    position: relative;
+}
+
+.card .btn-primary {
+    position: absolute;
+    bottom: 1em;
+    right: 1em;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    padding: 0;
+}
+
+.card .btn-success,
+.card .btn-warning {
+    margin-top: 0.5em;
+    font-size: 0.9em;
+}
