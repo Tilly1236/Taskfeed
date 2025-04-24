@@ -39,6 +39,13 @@ class PostInterface
 		PostInterface.increment += PostInterface.add;
 	}
 
+    static post_time(userid, groupid, textcontent, time, hasimages)
+	{
+		AppDatabase.add_post_time(String(PostInterface.increment), userid, groupid, textcontent, time, hasimages);
+		PostInterface.increment += PostInterface.add;
+	}
+
+
     static comment(userid, parentid, groupid, textcontent, hasimages)
     {
         if (AppDatabase.post_exists(parentid) != 1)

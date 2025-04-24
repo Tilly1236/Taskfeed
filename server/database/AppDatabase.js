@@ -12,20 +12,35 @@ class AppDatabase
             this.db = new Database('./server/database/AppDatabase.sqlite3');
             this.db.pragma('journal_mode = WAL');
 
-            // users
-            this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid INTEGER PRIMARY KEY, username TEXT UNIQUE) ").run();
+            this.create_tables();
 
-            // posts
-            this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid INTEGER PRIMARY KEY, userid INTEGER, groupid INTEGER, created_at INTEGER, textcontent TEXT, commentcount INTEGER, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid))").run();
-
-            this.db.prepare("CREATE TABLE IF NOT EXISTS comments (commentid INTEGER PRIMARY KEY, parentid INTEGER, userid INTEGER, created_at INTEGER, textcontent TEXT, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid), FOREIGN KEY(parentid) REFERENCES posts(postid))").run();
-
-            // group system
-
-            this.db.prepare("CREATE TABLE IF NOT EXISTS groups (groupid INTEGER PRIMARY KEY, groupname TEXT)").run();
-
-            this.db.prepare("CREATE TABLE IF NOT EXISTS groupmembers (memberid INTEGER, groupid INTEGER, isAdmin INTEGER, isLeader INTEGER, FOREIGN KEY(memberid) REFERENCES users(userid), FOREIGN KEY(groupid) REFERENCES groups(groupid))").run();
         }
+    }
+
+    static create_tables()
+    {
+        // users
+        this.db.prepare("CREATE TABLE IF NOT EXISTS users (userid INTEGER PRIMARY KEY, username TEXT UNIQUE) ").run();
+
+        // posts
+        this.db.prepare("CREATE TABLE IF NOT EXISTS posts (postid INTEGER PRIMARY KEY, userid INTEGER, groupid INTEGER, created_at INTEGER, textcontent TEXT, commentcount INTEGER, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid))").run();
+
+        this.db.prepare("CREATE TABLE IF NOT EXISTS comments (commentid INTEGER PRIMARY KEY, parentid INTEGER, userid INTEGER, created_at INTEGER, textcontent TEXT, hasImages INTEGER, FOREIGN KEY(userid) REFERENCES users(userid), FOREIGN KEY(parentid) REFERENCES posts(postid))").run();
+
+        // group system
+
+        this.db.prepare("CREATE TABLE IF NOT EXISTS groups (groupid INTEGER PRIMARY KEY, groupname TEXT)").run();
+
+        this.db.prepare("CREATE TABLE IF NOT EXISTS groupmembers (memberid INTEGER, groupid INTEGER, isAdmin INTEGER, isLeader INTEGER, FOREIGN KEY(memberid) REFERENCES users(userid), FOREIGN KEY(groupid) REFERENCES groups(groupid))").run();
+    }
+
+    static drop_tables()
+    {
+        this.db.prepare("DROP TABLE comments").run();
+        this.db.prepare("DROP TABLE groupmembers").run();
+        this.db.prepare("DROP TABLE groups").run();
+        this.db.prepare("DROP TABLE posts").run();
+        this.db.prepare("DROP TABLE users ").run();
     }
 
     static add_user(userid, username)
@@ -51,6 +66,11 @@ class AppDatabase
     static add_post(postid, userid, groupid, textcontent, hasimages)
     {
         this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, 0, ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
+    }
+
+    static add_post_time(postid, userid, groupid, textcontent,time, hasimages)
+    {
+        this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, ?, ?, 0, ?)").run(postid, userid, groupid, time, textcontent,  Number(hasimages));
     }
 
     static get_posts(groupid, latest, earliest=0)
