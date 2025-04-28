@@ -18,22 +18,17 @@ commentfeed.get('/:id', (req, res) => {
 	// 	res.status(409);
 	// 	return res.send({ status : 'ERROR', message: 'Missing groupid' });
 	// }
-	if (!req.body.parentid)
-	{
-		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Missing parentid' });
-	}
 
 	let listFeed
 
-	if (AppDatabase.post_exists(req.body.parentid) != 1)
+	if (AppDatabase.post_exists(req.params.id) != 1)
 	{
 		res.status(409);
 		return res.send({ status : 'ERROR', message: 'Parent post does not exist' });
 	}
 
 	try {
-		listFeed = AppDatabase.get_comments(req.body.parentid);
+		listFeed = AppDatabase.get_comments(req.params.id);
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send("Internal Server Error");
