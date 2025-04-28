@@ -2,6 +2,7 @@ import express from 'express';
 
 import PostInterface from './PostInterface.js';
 import authentication from '../authentication/authentication.js';
+import AppDatabase from '../database/AppDatabase.js';
 
 const post = express.Router();
 
@@ -48,6 +49,33 @@ post.post('/', (req, res) => {
 	res.set({'Content-Type': 'application/json' });
 	res.status(200);
 	return res.send({ status : 'OK' });
+
+
+})
+
+post.get('/:id', (req, res) => {
+
+	// Accepts request body tokens
+	// groupid - Required
+	// textcontent - Required
+	// images
+	let value;
+
+	try {
+
+		value = AppDatabase.get_post(req.params.id);
+
+	} catch (error) {
+
+		console.log(error);
+		return res.status(500).send("Internal Server Error");
+
+	}
+
+	
+	res.set({'Content-Type': 'application/json' });
+	res.status(200);
+	return res.send(value);
 
 
 })

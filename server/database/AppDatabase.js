@@ -40,6 +40,13 @@ class AppDatabase
     static add_post(postid, userid, groupid, textcontent, hasimages)
     {
         this.db.prepare("INSERT INTO posts VALUES (?, ?, ?, unixepoch('now'), ?, 0, ?)").run(postid, userid, groupid, textcontent, Number(hasimages));
+    
+    
+    }
+
+    static get_post(postid)
+    {
+        return this.db.prepare("SELECT p.*, u.username FROM posts p inner join users u on p.userid = u.userid WHERE postid = ?").get(postid);
     }
 
     static get_posts(groupid, latest, earliest=0)
