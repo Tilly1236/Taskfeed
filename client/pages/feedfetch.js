@@ -1,7 +1,7 @@
 // signupfetch.js
 const BASE_URL = 'http://localhost:3000'; // Update this if needed
 
-export async function feedFetch() {
+export async function feedFetch(groupId) {
   try {
     const response = await fetch(`${BASE_URL}/api/feed`, {
       method: 'POST',
@@ -10,7 +10,7 @@ export async function feedFetch() {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({
-        "groupid": 1,
+        "groupid": groupId,
         "latest": Math.floor(Date.now() / 1000), // Unix epoch in seconds
         "earliest": 1 // Unix epoch in seconds
         })

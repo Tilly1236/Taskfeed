@@ -17,9 +17,9 @@ ReactDOM.createRoot(root).render(
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/feed" element={<Feed />} />
+      <Route path="/feed/:groupId" element={<Feed />} />
       <Route path="/create_account" element={<CreateAccount />} />
-      <Route path="/add" element={<AddPostPage />} />
+      <Route path="/add/:groupId" element={<AddPostPage />} />
     </Routes>
   </BrowserRouter>
 );
