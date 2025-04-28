@@ -8,17 +8,16 @@ const commentfeed = express.Router();
 commentfeed.use(authentication());
 
 
-commentfeed.post('/', (req, res) => {
+commentfeed.get('/:id', (req, res) => {
 	
 	// Accepts request body tokens
-	// groupid - Required
 	// parentid - Required
 	
-	if (!req.body.groupid)
-	{
-		res.status(409);
-		return res.send({ status : 'ERROR', message: 'Missing groupid' });
-	}
+	// if (!req.body.groupid)
+	// {
+	// 	res.status(409);
+	// 	return res.send({ status : 'ERROR', message: 'Missing groupid' });
+	// }
 	if (!req.body.parentid)
 	{
 		res.status(409);
