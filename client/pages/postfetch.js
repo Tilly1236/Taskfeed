@@ -1,6 +1,6 @@
 const BASE_URL = "http://localhost:3000"; // or localhost if testing locally
 
-export async function postToFeed(message, token) {
+export async function postToFeed(message, token, groupId) {
   if (!token) {
     throw new Error("Missing auth token");
   }
@@ -13,7 +13,7 @@ export async function postToFeed(message, token) {
         "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify({
-        groupid: 1, // this is what David said is needed
+        groupid: groupId,
         textcontent: message
       }),
     });
