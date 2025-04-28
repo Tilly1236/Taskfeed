@@ -23,6 +23,7 @@ const CommentFeed = () => {
                 const postResponse = await fetch(`http://localhost:3000/api/post/${postId}`, {
                     headers: {
                         "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
+                        "Content-Type": "application/json",
                     },
                 });
                 console.log("Post response status:", postResponse.status); // Debugging
@@ -32,9 +33,10 @@ const CommentFeed = () => {
                 const postData = await postResponse.json();
                 setPost(postData);
     
-                const commentsResponse = await fetch(`http://localhost:3000/api/post/${postId}/postcomment`, {
+                const commentsResponse = await fetch(`http://localhost:3000/api/comment`, {
                     headers: {
                         "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
+                        "Content-Type": "application/json",
                     },
                 });
                 console.log("Comments response status:", commentsResponse.status); // Debugging
@@ -55,24 +57,32 @@ const CommentFeed = () => {
     const handleAddComment = async (postId, commentText) => {
         if (!commentText.trim()) return;
 
-        const token = localStorage.getItem("authToken"); // Retrieve the token
+        const token = localStorage.getItem("token"); // Retrieve the token
         if (!token) {
             console.error("No authentication token found");
             return;
         }
 
         try {
-            const response = await fetch(`http://localhost:3000/api/post/${postId}/postcomment`, {
+            const response = await fetch(`http://localhost:3000/api/comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 },
-                body: JSON.stringify({ text: commentText }),
+                body: JSON.stringify({ 
+                    parentid: postId,
+                    groupid: 1,
+                    textcontent: commentText,
+                }),
             });
 
             if (response.ok) {
-                const addedComment = await response.json();
+                const addedComment = {
+                    user: "Current User",
+                    text: commentText,
+                    timestamp: new Date().toLocaleString(),
+                };
                 setComments((prevComments) => [...prevComments, addedComment]);
             } else {
                 console.error("Failed to add comment");
