@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import PostCard from "../components/PostCard"; // Import the PostCard component
 import Comment from "../components/Comment"; // Import the Comment component
+import Navbar from "../components/Navbar"; // Import the Navbar component
+import FilterPanel from "../components/FilterPanel"; // Import the FilterPanel component
 
 const CommentFeed = () => {
     const { postId } = useParams(); // Get the post ID from the URL
@@ -9,6 +12,10 @@ const CommentFeed = () => {
     const [post, setPost] = useState(null);
     const [comments, setComments] = useState([]);
     const [newComment, setNewComment] = useState("");
+    const [filterVisible, setFilterVisible] = useState(false);
+    const [dateFilter, setDateFilter] = useState("");
+    const [posterFilter, setPosterFilter] = useState("");
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Fetch the post and its comments
@@ -33,7 +40,7 @@ const CommentFeed = () => {
                 const postData = await postResponse.json();
                 setPost(postData);
     
-                const commentsResponse = await fetch(`http://localhost:3000/api/comment`, {
+                const commentsResponse = await fetch(`http://localhost:3000/api/commentfeed/${postId}`, {
                     headers: {
                         "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
                         "Content-Type": "application/json",
@@ -62,14 +69,23 @@ const CommentFeed = () => {
             console.error("No authentication token found");
             return;
         }
+        console.log("Token:", token); // Log the token for debugging
 
         try {
+            console.log("Request body:", {
+                parentid: postId,
+                groupid: 1,
+                textcontent: commentText,
+            });
+            
+            
             const response = await fetch(`http://localhost:3000/api/comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 },
+
                 body: JSON.stringify({ 
                     parentid: postId,
                     groupid: 1,
@@ -95,6 +111,18 @@ const CommentFeed = () => {
     if (!post) return <div>Loading...</div>;
 
     return (
+        <>
+        <Navbar filterVisible={filterVisible} setFilterVisible={setFilterVisible} navigate={navigate} />
+            {filterVisible && (
+                <FilterPanel
+                    dateFilter={dateFilter}
+                    setDateFilter={setDateFilter}
+                    posterFilter={posterFilter}
+                    setPosterFilter={setPosterFilter}
+                    applyFilters={applyFilters}
+                />
+            )}
+
         <div className="container mt-4">
             {/* Render the PostCard component */}
             <PostCard
@@ -108,7 +136,7 @@ const CommentFeed = () => {
             <ul className="list-group mb-4">
                 {comments.map((comment, index) => (
                     <li key={index} className="list-group-item">
-                        <strong>{comment.user}</strong>: {comment.text}
+                        <strong>{comment.username}</strong>: {comment.textcontent}
                         <br />
                         <small className="text-muted">{comment.timestamp}</small>
                     </li>
@@ -121,6 +149,7 @@ const CommentFeed = () => {
                 onSubmitComment={(postId, commentText) => handleAddComment(postId, commentText)}
             />
         </div>
+        </>
     );
 };
 
