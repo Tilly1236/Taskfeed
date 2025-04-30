@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Constants from "./constants";
+import Constants from "../Constants.js";
 
 const cardStyles = {
   width: "100%",
@@ -19,8 +19,8 @@ export default function GroupsPage() {
       setIsLoading(true);
       setFetchError(null);
       try {
-        const response = await fetch(`${Constants.API_URL}api/user/groups`, {
-          method: "GET",
+        const response = await fetch(`${Constants.API_URL}api/group/list_groups`, {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -28,7 +28,7 @@ export default function GroupsPage() {
         });
         if (!response.ok) throw new Error(await response.text());
         const json = await response.json();
-        setGroupList(json.groups || []);
+        setGroupList(json || []);
       } catch (err) {
         setFetchError(err.message);
       } finally {
@@ -48,17 +48,20 @@ export default function GroupsPage() {
     if (!window.confirm("Are you sure you want to leave this group?")) return;
 
     try {
-      const response = await fetch(`${Constants.API_URL}api/groups/${groupId}/leave`, {
-        method: "POST",
+      const response = await fetch(`${Constants.API_URL}api/group/leave`, {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         },
-      });
+        body: JSON.stringify({
+          "groupid": groupId,
+        })
+    });
       if (!response.ok) throw new Error(await response.text());
 
       // After leaving, refresh the group list
-      setGroupList(groupList.filter((group) => group.id !== groupId));
+      setGroupList(groupList.filter((group) => group.groupid !== groupId));
     } catch (err) {
       alert("Failed to leave group: " + err.message);
     }
@@ -85,19 +88,19 @@ export default function GroupsPage() {
           <div>
             {groupList.length ? (
               groupList.map((group) => (
-                <div className="card mb-3" key={group.id} style={cardStyles}>
+                <div className="card mb-3" key={group.groupid} style={cardStyles}>
                   <div className="d-flex justify-content-between align-items-center">
-                    <h5 className="mb-0">{group.name}</h5>
+                    <h5 className="mb-0">{group.groupname}</h5>
                     <div>
                       <button
                         className="btn btn-primary btn-sm me-2"
-                        onClick={() => handleViewMembers(group.id)}
+                        onClick={() => handleViewMembers(group.groupid)}
                       >
                         View Members
                       </button>
                       <button
                         className="btn btn-danger btn-sm"
-                        onClick={() => handleLeaveGroup(group.id)}
+                        onClick={() => handleLeaveGroup(group.groupid)}
                       >
                         Leave Group
                       </button>
