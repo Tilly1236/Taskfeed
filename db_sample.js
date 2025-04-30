@@ -51,3 +51,10 @@ let feed = AppDatabase.get_posts(1,currentTime,0);
 
 PostInterface.comment(users[0].id, feed[0].postid,1,"Hello World",false);
 
+GroupInterface.create(users[0].id, "GroupTest1");
+GroupInterface.create(users[1].id, "GroupTest2");
+
+let groups = GroupInterface.list_groups(users[1].id);
+
+GroupInterface.add_member(users[1].id,"user1",groups[0].groupid, false);
+
