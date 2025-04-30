@@ -6,47 +6,29 @@ const cardStyles = {
   textAlign: "left",
   boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
   borderRadius: "8px",
+  padding: "16px",
 };
 
-// Default list of groups for TaskFeed
-const defaultGroupList = [
-  { id: 1, name: "GroupOne" },
-  { id: 2, name: "GroupTwo" },
-  { id: 3, name: "GroupThree" },
-];
-
 export default function GroupsPage() {
-  // List of all available groups
-  const [groupList] = useState(defaultGroupList);
-  // Currently selected group
-  const [selectedGroup, setSelectedGroup] = useState(groupList[0]);
-  // Posts fetched for the selected group
-  const [groupPosts, setGroupPosts] = useState([]);
-  // Loading and error states for API calls
+  const [groupList, setGroupList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [fetchError, setFetchError] = useState(null);
 
-  // Load posts whenever selectedGroup changes
   useEffect(() => {
-    const loadGroupPosts = async () => {
+    const loadGroups = async () => {
       setIsLoading(true);
       setFetchError(null);
       try {
-        const response = await fetch(`${Constants.API_URL}api/feed`, {
-          method: "POST",
+        const response = await fetch(`${Constants.API_URL}api/user/groups`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
-          body: JSON.stringify({
-            groupid: selectedGroup.id,
-            latest: Math.floor(Date.now() / 1000),
-            earliest: 1,
-          }),
         });
         if (!response.ok) throw new Error(await response.text());
         const json = await response.json();
-        setGroupPosts(json.items || json);
+        setGroupList(json.groups || []);
       } catch (err) {
         setFetchError(err.message);
       } finally {
@@ -54,86 +36,82 @@ export default function GroupsPage() {
       }
     };
 
-    loadGroupPosts();
-  }, [selectedGroup]);
+    loadGroups();
+  }, []);
+
+  const handleViewMembers = (groupId) => {
+    // Navigate to the member list page (you can change this navigation based on your router)
+    window.location.href = `/groups/${groupId}/members`;
+  };
+
+  const handleLeaveGroup = async (groupId) => {
+    if (!window.confirm("Are you sure you want to leave this group?")) return;
+
+    try {
+      const response = await fetch(`${Constants.API_URL}api/groups/${groupId}/leave`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      if (!response.ok) throw new Error(await response.text());
+
+      // After leaving, refresh the group list
+      setGroupList(groupList.filter((group) => group.id !== groupId));
+    } catch (err) {
+      alert("Failed to leave group: " + err.message);
+    }
+  };
 
   return (
     <>
       <nav className="navbar bg-body-tertiary mb-4">
         <div className="container-fluid">
-          <button className="btn btn-outline-secondary me-3" onClick={() => null}>
+          <button className="btn btn-outline-secondary me-3" onClick={() => window.history.back()}>
             ← Back
           </button>
-          <span className="navbar-brand">TaskFeed Groups</span>
+          <span className="navbar-brand">Your Groups</span>
         </div>
       </nav>
 
       <div className="container mt-4">
-        <div className="row">
-          {/* Sidebar: group list */}
-          <div className="col-md-3 mb-4">
-            <ul className="list-group">
-              {groupList.map((group) => (
-                <li
-                  key={group.id}
-                  className="list-group-item text-body-secondary"
-                  style={{
-                    cursor: "pointer",
-                    backgroundColor: selectedGroup.id === group.id ? "#007bff" : undefined,
-                    color: selectedGroup.id === group.id ? "#ffffff" : undefined,
-                  }}
-                  onClick={() => setSelectedGroup(group)}
-                >
-                  {group.name}
-                </li>
-              ))}
-            </ul>
-          </div>
+        <h4 className="mb-4">Groups You Belong To</h4>
 
-          {/* Main: posts for selected group */}
-          <div className="col-md-9">
-            <h4 className="mb-3">{selectedGroup.name}</h4>
+        {isLoading && <p>Loading groups…</p>}
+        {fetchError && <p className="text-danger">{fetchError}</p>}
 
-            {isLoading && <p>Loading…</p>}
-            {fetchError && <p className="text-danger">{fetchError}</p>}
-
-            {!isLoading && !fetchError && (
-              <div>
-                {groupPosts.length ? (
-                  groupPosts.map((post) => {
-                    const formattedDate = new Date(post.created_at * 1000).toLocaleString(
-                      "en-US",
-                      {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                        hour12: true,
-                      }
-                    );
-                    return (
-                      <div className="mb-4" key={post.id}>
-                        <div className="card" style={cardStyles}>
-                          <div className="card-body">
-                            <h5 className="card-title">{post.username}</h5>
-                            <h6 className="card-subtitle mb-2 text-body-secondary">
-                              <small>{formattedDate}</small>
-                            </h6>
-                            <p className="card-text">{post.textcontent}</p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })
-                ) : (
-                  <p className="text-muted">No posts in this group yet.</p>
-                )}
-              </div>
+        {!isLoading && !fetchError && (
+          <div>
+            {groupList.length ? (
+              groupList.map((group) => (
+                <div className="card mb-3" key={group.id} style={cardStyles}>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">{group.name}</h5>
+                    <div>
+                      <button
+                        className="btn btn-primary btn-sm me-2"
+                        onClick={() => handleViewMembers(group.id)}
+                      >
+                        View Members
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleLeaveGroup(group.id)}
+                      >
+                        Leave Group
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-muted">You are not part of any groups yet.</p>
             )}
           </div>
-        </div>
+        )}
       </div>
     </>
   );
 }
+
