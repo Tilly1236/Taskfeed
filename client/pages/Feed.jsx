@@ -103,7 +103,7 @@ function Feed() {
 
     return (
         <>
-            <Navbar filterVisible={filterVisible} setFilterVisible={setFilterVisible} navigate={navigate} />
+            <Navbar filterVisible={filterVisible} setFilterVisible={setFilterVisible} navigate={navigate} groupId={groupId} />
             {filterVisible && (
                 <FilterPanel
                     dateFilter={dateFilter}
