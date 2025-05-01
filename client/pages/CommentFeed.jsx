@@ -1,0 +1,156 @@
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import PostCard from "../components/PostCard"; // Import the PostCard component
+import Comment from "../components/Comment"; // Import the Comment component
+import Navbar from "../components/Navbar"; // Import the Navbar component
+import FilterPanel from "../components/FilterPanel"; // Import the FilterPanel component
+
+const CommentFeed = () => {
+    const { postId } = useParams(); // Get the post ID from the URL
+    console.log("Post ID from URL:", postId); // Log the post ID for debugging
+    const [post, setPost] = useState(null);
+    const [comments, setComments] = useState([]);
+    const [newComment, setNewComment] = useState("");
+    const [filterVisible, setFilterVisible] = useState(false);
+    const [dateFilter, setDateFilter] = useState("");
+    const [posterFilter, setPosterFilter] = useState("");
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // Fetch the post and its comments
+        const fetchPostAndComments = async () => {
+            const token = localStorage.getItem("token"); // Retrieve the token
+            if (!token) {
+                console.error("No authentication token found");
+                return;
+            }
+    
+            try {
+                const postResponse = await fetch(`http://localhost:3000/api/post/${postId}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("Post response status:", postResponse.status); // Debugging
+                if (!postResponse.ok) {
+                    throw new Error(`Failed to fetch post: ${postResponse.statusText}`);
+                }
+                const postData = await postResponse.json();
+                setPost(postData);
+    
+                const commentsResponse = await fetch(`http://localhost:3000/api/commentfeed/${postId}`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`, // Add the token to the Authorization header
+                        "Content-Type": "application/json",
+                    },
+                });
+                console.log("Comments response status:", commentsResponse.status); // Debugging
+                if (!commentsResponse.ok) {
+                    throw new Error(`Failed to fetch comments: ${commentsResponse.statusText}`);
+                }
+                const commentsData = await commentsResponse.json();
+                setComments(commentsData);
+            } catch (error) {
+                console.error("Error fetching post or comments:", error);
+            }
+        };
+    
+        fetchPostAndComments();
+    }, [postId]);
+
+
+    const handleAddComment = async (postId, commentText) => {
+        if (!commentText.trim()) return;
+
+        const token = localStorage.getItem("token"); // Retrieve the token
+        if (!token) {
+            console.error("No authentication token found");
+            return;
+        }
+        console.log("Token:", token); // Log the token for debugging
+
+        try {
+            console.log("Request body:", {
+                parentid: postId,
+                groupid: 1,
+                textcontent: commentText,
+            });
+            
+            
+            const response = await fetch(`http://localhost:3000/api/comment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`,
+                },
+
+                body: JSON.stringify({ 
+                    parentid: postId,
+                    groupid: 1,
+                    textcontent: commentText,
+                }),
+            });
+
+            if (response.ok) {
+                const addedComment = {
+                    user: "Current User",
+                    text: commentText,
+                    timestamp: new Date().toLocaleString(),
+                };
+                setComments((prevComments) => [...prevComments, addedComment]);
+            } else {
+                console.error("Failed to add comment");
+            }
+        } catch (error) {
+            console.error("Error adding comment:", error);
+        }
+    };
+
+    if (!post) return <div>Loading...</div>;
+
+    return (
+        <>
+        <Navbar filterVisible={filterVisible} setFilterVisible={setFilterVisible} navigate={navigate} />
+            {filterVisible && (
+                <FilterPanel
+                    dateFilter={dateFilter}
+                    setDateFilter={setDateFilter}
+                    posterFilter={posterFilter}
+                    setPosterFilter={setPosterFilter}
+                    applyFilters={applyFilters}
+                />
+            )}
+
+        <div className="container mt-4">
+            {/* Render the PostCard component */}
+            <PostCard
+                post={post}
+                handleCommentClick={() => {}} // No need for comment toggling here
+                showCommentInput={false} // Disable inline comment input
+                onSubmitComment={() => {}} // No inline comment submission
+            />
+
+            <h5>Comments</h5>
+            <ul className="list-group mb-4">
+                {comments.map((comment, index) => (
+                    <li key={index} className="list-group-item">
+                        <strong>{comment.username}</strong>: {comment.textcontent}
+                        <br />
+                        <small className="text-muted">{comment.timestamp}</small>
+                    </li>
+                ))}
+            </ul>
+
+            {/* Render the Comment component for adding a new comment */}
+            <Comment
+                postId={postId}
+                onSubmitComment={(postId, commentText) => handleAddComment(postId, commentText)}
+            />
+        </div>
+        </>
+    );
+};
+
+export default CommentFeed;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, use } from "react";
 import { feedFetch } from "./feedfetch";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams} from "react-router-dom";
 import Navbar from "../components/Navbar";
 import PostCard from "../components/PostCard";
 import FilterPanel from "../components/FilterPanel";
@@ -17,6 +17,7 @@ function Feed() {
     const [posterFilter, setPosterFilter] = useState("");
     const [showCommentInput, setShowCommentInput] = useState(null);
     const [username, setUsername] = useState("");
+    const { groupId } = useParams();
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -30,7 +31,7 @@ function Feed() {
 
     const fetchPosts = async () => {
         try {
-            const fetchedPosts = await feedFetch();
+            const fetchedPosts = await feedFetch( groupId );
             const postsWithComments = fetchedPosts.map((post) => ({
                 ...post,
                 comments: post.comments || [],

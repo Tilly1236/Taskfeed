@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { postToFeed } from './postfetch';
 
 const AddPostPage = () => {
@@ -7,6 +7,7 @@ const AddPostPage = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate(); //  hook for redirect
+  const { groupId } = useParams();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,7 +21,7 @@ const AddPostPage = () => {
     }
 
     try {
-      await postToFeed(message, token);
+      await postToFeed(message, token, groupId);
       setSuccess(true);
       setMessage('');
 

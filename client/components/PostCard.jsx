@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Comment from "./Comment";
+import { Link } from "react-router-dom";
 
 const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment/*, handleStatusChange*/ }) => {
   const [showOptions, setShowOptions] = useState(false);
