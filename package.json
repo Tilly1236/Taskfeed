@@ -8,6 +8,7 @@
     "client": "vite",
     "build": "vite build",
     "server": "node --env-file-if-exists=.env --watch server/server.js",
+    "db-reset": "node db_sample.js",
     "lint": "eslint .",
     "preview": "vite preview"
   },
