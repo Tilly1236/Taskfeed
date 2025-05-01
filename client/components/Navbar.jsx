@@ -1,7 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 
-const Navbar = ({filterVisible, setFilterVisible, navigate}) => {
+const Navbar = ({filterVisible, setFilterVisible, navigate, groupId}) => {
     return (
         <nav className ="navbar bg-body-tertiary">
             <div className="collapse" id="navbarToggleExternalContent" data-bs-theme="dark">
@@ -49,7 +49,7 @@ const Navbar = ({filterVisible, setFilterVisible, navigate}) => {
                 <button
                     type="button"
                     className="btn btn-primary"
-                    onClick={() => navigate("/add")}
+                    onClick={() => navigate("/add/" + String(groupId))}
                 >
                     +
                 </button>
