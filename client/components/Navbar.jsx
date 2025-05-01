@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const Navbar = ({filterVisible, setFilterVisible, navigate}) => {
     return (
@@ -23,7 +24,10 @@ const Navbar = ({filterVisible, setFilterVisible, navigate}) => {
                 >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <a className="navbar-brand">TaskFeed</a>
+                <Link to="/feed" className="navbar-brand">
+                    TaskFeed
+                </Link>
+                
                 <form className="d-flex me-auto" role="search">
                     <input
                         className="form-control me-2"
