@@ -12,9 +12,19 @@ class AuthDatabase
             this.db = new Database('./server/database/AuthDatabase.sqlite3');
             this.db.pragma('journal_mode = WAL');
 
-            this.db.prepare("CREATE TABLE IF NOT EXISTS auth (userid INTEGER PRIMARY KEY, hash TEXT) ").run();
+            
         }
         
+    }
+
+    static create_tables()
+    {
+        this.db.prepare("CREATE TABLE IF NOT EXISTS auth (userid INTEGER PRIMARY KEY, hash TEXT) ").run();
+    }
+
+    static drop_tables()
+    {
+        this.db.prepare("DROP TABLE auth ").run();
     }
 
     static add_auth(userid, hash)

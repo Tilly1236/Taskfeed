@@ -1,6 +1,7 @@
 
 import JsonWebToken from './JsonWebToken.js';
 import AuthError from '../errors/AuthError.js';
+import AppDatabase from '../database/AppDatabase.js';
 
 /**
  * Middleware to handle authentication using JSON webtokens
@@ -55,6 +56,11 @@ function authentication() {
 		let payload = verification.payload;
 
 		// let current_time_seconds = Math.floor(Date.now() / 1000);
+
+		if (AppDatabase.user_exists(payload.id) != 1) // Check if userid within token is in user databases
+		{	
+			return res.status(400).send("User does not exists, login again");
+		}
 
 
 		res.locals.id = payload.id
