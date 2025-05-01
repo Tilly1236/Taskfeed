@@ -7,6 +7,7 @@ import FilterPanel from "../components/FilterPanel";
 import Comment from "../components/Comment";
 import { parseuserinfo } from "./parseuserinfo";
 
+//updated by MW
 function Feed() {
     const location = useLocation();
     const navigate = useNavigate();
@@ -34,6 +35,7 @@ function Feed() {
             const postsWithComments = fetchedPosts.map((post) => ({
                 ...post,
                 comments: post.comments || [],
+                status: null, // Add a status field to each post
             }));
             setPosts(postsWithComments);
             
@@ -76,8 +78,14 @@ function Feed() {
         setShowCommentInput((prev) => (prev === postId ? null : postId));
     };
 
+    const handleStatusChange = (postId, status) => {
+        setPosts((prevPosts) =>
+            prevPosts.map((post) =>
+                post.postid === postId ? { ...post, status } : post
+            )
+        );
+    };
 
-    
     const applyFilters = () => {
         console.log([dateFilter, posterFilter]);
     setFilterVisible(false);
@@ -121,6 +129,7 @@ function Feed() {
                         handleCommentClick={handleCommentClick}
                         showCommentInput = {showCommentInput === post.postid}
                         onSubmitComment = {handleSubmitComment}
+                        handleStatusChange={handleStatusChange}
                     />
                 ))}
             </div>

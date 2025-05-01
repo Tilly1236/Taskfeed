@@ -57,6 +57,18 @@ class PostInterface
         AppDatabase.add_comment(String(PostInterface.comment_inc), parentid, userid, textcontent, hasimages);
         PostInterface.comment_inc += PostInterface.add;
     }
+
+    static tag(new_tag, postid, groupid)
+    {
+
+        if (AppDatabase.post_exists(postid) != 1)
+        {
+            throw new PostError("postid does not exists");
+        }
+
+        AppDatabase.change_tag(new_tag, postid)
+
+    }
 }
 
 export default PostInterface;
