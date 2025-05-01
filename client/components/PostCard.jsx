@@ -1,13 +1,45 @@
 import React, { useState } from "react";
 import Comment from "./Comment";
 
-const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment, handleStatusChange }) => {
+const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment/*, handleStatusChange*/ }) => {
   const [showOptions, setShowOptions] = useState(false);
 
   const toggleOptions = () => {
     setShowOptions((prev) => !prev);
   };
 
+  const handleStatusChange = async (postid, tag, groupid) => {
+    try {
+      const token = localStorage.getItem("token"); 
+      const groupid = post.groupid; 
+
+      const response = await fetch("http://localhost:3000/api/tag", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, 
+        },
+        body: JSON.stringify({
+          "postid": postid,
+          "tag": tag,
+          "groupid": groupid
+          }),
+      });
+
+      if (response.ok) {
+        console.log("Tag updated successfully");
+        post.tag = tag;
+        setShowOptions(false);
+      } else {
+        const errorResponse = await response.json();
+        console.error("Failed to update tag");
+      }
+    } catch (error) {
+      console.error("Error updating tag:", error);
+    }
+  };
+
+ 
   const formattedDate = new Date(post.created_at * 1000).toLocaleString("en-US", {
     month: "long",
     day: "numeric",
@@ -51,9 +83,9 @@ const PostCard = ({ post, handleCommentClick, showCommentInput, onSubmitComment,
           </ul>
 
           {/* Display the current status */}
-          {post.status && (
+          {post.tag && (
             <p className="card-text">
-              <strong>Status:</strong> {post.status}
+              <strong>Status:</strong> {post.tag}
             </p>
           )}
 
