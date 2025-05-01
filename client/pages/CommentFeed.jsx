@@ -69,8 +69,6 @@ const CommentFeed = () => {
             console.error("No authentication token found");
             return;
         }
-
-        try {
         console.log("Token:", token); // Log the token for debugging
 
         try {
@@ -79,13 +77,15 @@ const CommentFeed = () => {
                 groupid: 1,
                 textcontent: commentText,
             });
-           
+            
+            
             const response = await fetch(`http://localhost:3000/api/comment`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                     "Authorization": `Bearer ${token}`,
                 },
+
                 body: JSON.stringify({ 
                     parentid: postId,
                     groupid: 1,
@@ -122,6 +122,7 @@ const CommentFeed = () => {
                     applyFilters={applyFilters}
                 />
             )}
+
         <div className="container mt-4">
             {/* Render the PostCard component */}
             <PostCard
