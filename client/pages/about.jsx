@@ -7,7 +7,7 @@ import "./About.css";
 
 const teamMembers = [
   { name: "Sanjay Gupta", role: "Full-Stack Engineer" },
-  { name: "MaRaya WHite", role: "Tester and Developer" },
+  { name: "MaRaya White", role: "Tester and Developer" },
   { name: "your name", role: "your role here" },
   { name: "your name", role: "your role here" },
   { name: "your name", role: "your role here" },
