@@ -9,7 +9,7 @@
     "build": "vite build",
     "server": "node --env-file-if-exists=.env --watch server/server.js",
     "db-reset": "node db_sample.js",
-    "test": "jest",
+    "test": "jest --verbose",
     "lint": "eslint .",
     "preview": "vite preview"
   },
