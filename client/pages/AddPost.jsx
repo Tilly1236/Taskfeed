@@ -1,60 +1,49 @@
-import React, { useState } from 'react';
+// tests/AddPostPage.test.jsx
+import React from 'react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, expect, test, beforeEach, jest } from '@jest/globals';
+import AddPostPage from '../src/pages/AddPost';     // ← adjust if your file lives elsewhere
+import * as postfetch from '../src/postfetch';      // ← likewise adjust
 import { useNavigate, useParams } from 'react-router-dom';
-import { postToFeed } from './postfetch';
 
-const AddPostPage = () => {
-  const [message, setMessage] = useState('');
-  const [success, setSuccess] = useState(false);
-  const [error, setError] = useState('');
-  const navigate = useNavigate(); //  hook for redirect
-  const { groupId } = useParams();
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSuccess(false);
-    setError('');
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      setError('You must be logged in to post.');
-      return;
-    }
-
-    try {
-      await postToFeed(message, token, groupId);
-      setSuccess(true);
-      setMessage('');
-
-      //  Redirect to /feed after successful post
-      await new Promise(resolve => setTimeout(resolve, 3000)); // Adds 3 second to allow server add post to database before redirecting to /feed
-      navigate('/feed', {state: {refresh: true}}); // Pass refresh state to trigger feed refresh
-    } catch (err) {
-      console.error('Post error:', err);
-      setError(err.message || 'Something went wrong.');
-    }
+// Mock react-router hooks
+jest.mock('react-router-dom', () => {
+  const original = jest.requireActual('react-router-dom');
+  return {
+    ...original,
+    useNavigate: jest.fn(),
+    useParams: jest.fn(),
   };
+});
 
-  return (
-    <div className="container mt-4">
-      <h2 className="mb-4">Add a New Post</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Message:</label>
-          <textarea
-            className="form-control"
-            rows="4"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="btn btn-primary">Post</button>
-      </form>
+describe('AddPostPage component', () => {
+  let mockNavigate;
 
-      {success && <div className="alert alert-success mt-3">Post submitted!</div>}
-      {error && <div className="alert alert-danger mt-3">{error}</div>}
-    </div>
-  );
-};
+  beforeEach(() => {
+    // reset and stub router hooks
+    mockNavigate = jest.fn();
+    useNavigate.mockReturnValue(mockNavigate);
+    useParams.mockReturnValue({ groupId: 'test-group' });
 
-export default AddPostPage;
+    // stub localStorage
+    jest.spyOn(Storage.prototype, 'getItem');
+    Storage.prototype.getItem.mockClear();
+    jest.clearAllMocks();
+  });
+
+  test('renders textarea and Post button', () => {
+    render(<AddPostPage />);
+    expect(screen.getByRole('textbox')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /post/i })).toBeInTheDocument();
+  });
+
+  test('shows error if no token in localStorage', async () => {
+    Storage.prototype.getItem.mockReturnValue(null);
+    render(<AddPostPage />);
+    fireEvent.click(screen.getByRole('button', { name: /post/i }));
+    expect(await screen.findByText(/you must be logged in to post/i))
+      .toBeInTheDocument();
+  });
+
+  
+  
