@@ -1,4 +1,4 @@
-// tests/AddPostPage.test.js
+// tests/AddPostPage.test.jsx
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, expect, test, beforeEach, jest } from '@jest/globals';
